@@ -1,0 +1,1 @@
+export const urlApi: string = "https://invidio.us";

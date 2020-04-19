@@ -16,9 +16,12 @@
     "@testing-library/user-event": "^7.1.2",
     "electron": "^8.2.3",
     "electron-is-dev": "^1.2.0",
+    "i18next": "^19.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-i18next": "^11.3.5",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0"
   },
   "scripts": {
     "start": "cross-env BROWSER=none npm run react-start",
