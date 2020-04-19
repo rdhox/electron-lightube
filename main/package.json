@@ -1,0 +1,23 @@
+{
+  "name": "main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/electron.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=dev nodemon --exec \"electron src/electron.js\" && tsc ./src/electron.ts -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "cross-env": "^7.0.2",
+    "electron-is-dev": "^1.2.0",
+    "electron-reload": "^1.5.0",
+    "nodemon": "^2.0.3",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "electron": "^8.2.3"
+  }
+}
