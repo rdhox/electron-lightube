@@ -34,5 +34,6 @@ export async function request(
         .catch(e => ({}));
     }
     return response.status;
-  });
+  })
+  .catch(e => console.error(e));
 }

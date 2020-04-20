@@ -1,1 +1,1 @@
-export const urlApi: string = "https://invidio.us";
+export const baseUrl: string = "https://invidio.us";
