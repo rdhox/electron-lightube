@@ -1,0 +1,11 @@
+{
+  "en" :{
+    "atoms": {},
+    "molecules": {
+      "InputSearch": {
+        "search": "Search..."
+      }
+    },
+    "organisms":{}
+  }
+}

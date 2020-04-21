@@ -1,21 +1,19 @@
-import React, {useEffect} from 'react';
-import { getResultGlobalSearch } from "../services/apiService";
+import React from 'react';
+import styled from 'styled-components';
+import Header from '../components/organisms/Header';
  
 const MainLayout : React.SFC = () => {
 
-  useEffect(() => {
-    async function req() {
-      const res = await getResultGlobalSearch('q=Saez');
-      console.log(res);
-    }
-    req();
-  });
-
   return (
-    <div>
-      <h1>Hello!</h1>
-    </div>
+    <Container>
+      <Header />
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
  
-export default MainLayout ;
+export default MainLayout;
