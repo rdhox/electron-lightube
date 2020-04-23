@@ -4,12 +4,15 @@ import React from 'react';
 import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
 import { ReactComponent as GearIcon } from '../../assets/icons/gear.svg';
 import { ReactComponent as ArrowDownIcon } from '../../assets/icons/arrow_down.svg';
+import { ReactComponent as AddIcon } from '../../assets/icons/add.svg';
+import { ReactComponent as ArrowBackIcon } from '../../assets/icons/arrow_back.svg';
+import { ReactComponent as TickIcon } from '../../assets/icons/tick.svg';
 
 type SizeType = number | string;
 
 interface PropsSvg {
-  width?: SizeType;
-  height?: SizeType;
+  width: SizeType;
+  height: SizeType;
   color?: string;
 }
 
@@ -25,6 +28,9 @@ const svgs: SvgsType = {
   search: SearchIcon,
   gear: GearIcon,
   arrowDown: ArrowDownIcon,
+  add: AddIcon,
+  arrowBack: ArrowBackIcon,
+  tick: TickIcon,
 };
 
 const Picto: React.SFC <Props> = props => {

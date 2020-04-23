@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { useStore } from '../../store';
 // import components
 import Input from '../atoms/Input';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -11,10 +10,8 @@ interface Props {}
 const InputSearch: React.SFC<Props> = props => {
 
   function onClick() {
-    setSearch({search: searchValue});
+    console.log('Value to search');
   }
-
-  const setSearch = useStore(state => state.global.reducers.setSearch);
 
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -24,7 +21,7 @@ const InputSearch: React.SFC<Props> = props => {
     <Container>
       <Input 
         value={searchValue}
-        handleChange={setSearchValue}
+        onHandleChange={setSearchValue}
         placeholder={t('molecules.InputSearch.search')}
         length='400px'
       />

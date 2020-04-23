@@ -1,7 +1,13 @@
 import { Model } from './index';
 
-const settings: Model = (set, get) => ({
-  value: "",
+interface State {
+  hello: string;
+}
+
+const settings: Model<State> = (update, get) => ({
+  state: {
+    hello: "World",
+  },
   reducers: {},
   effects: {}
 });

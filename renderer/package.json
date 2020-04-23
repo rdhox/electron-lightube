@@ -23,6 +23,7 @@
     "react-i18next": "^11.3.5",
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.0",
+    "uniqid": "^5.2.0",
     "zustand": "^2.2.3"
   },
   "scripts": {

@@ -4,6 +4,17 @@
     "molecules": {
       "InputSearch": {
         "search": "Search..."
+      },
+      "ThemesManager": {
+        "title": "Themes",
+        "placeholder": "New theme...",
+        "delete": "delete",
+        "modal": {
+          "title": "Are you sure?",
+          "text": "all your subscriptions will be lost",
+          "yes": "yes",
+          "no": "no"
+        }
       }
     },
     "organisms":{}

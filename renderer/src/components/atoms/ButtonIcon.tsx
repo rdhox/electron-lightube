@@ -15,8 +15,8 @@ interface ParamsStyle {
 interface Props extends ParamsStyle {
   icon: string;
   handleClick: () => void; 
-  widthIcon?: string | number;
-  heightIcon?: string | number;
+  widthIcon: string | number;
+  heightIcon: string | number;
   colorIcon?: string;
 }
 

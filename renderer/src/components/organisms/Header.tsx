@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useStore } from '../../store';
 // import components
 import InputSearch from '../molecules/InputSearch';
 import ButtonIcon from '../atoms/ButtonIcon';
+import ThemesManager from '../molecules/ThemesManager';
 
 
 export interface Props {}
@@ -14,11 +14,9 @@ const Header: React.SFC <Props> = () => {
     console.log('settings');
   }
 
-  const search = useStore(state => state.global.search);
-
   return (
     <Container>
-      <Row>
+      <Row align="center" >
         <AlignLeft>
           <ButtonIcon
             icon="gear"
@@ -32,7 +30,9 @@ const Header: React.SFC <Props> = () => {
         </AlignLeft>
         <InputSearch />
       </Row>
-      <h1>{search}</h1>
+      <Row align="flex-start">
+        <ThemesManager />
+      </Row>
     </Container>
   );
 }
@@ -40,15 +40,14 @@ const Header: React.SFC <Props> = () => {
 const Container = styled.header`
   position: relative;
   width: 100%;
-  height: 150px;
   display: flex;
   flex-direction: column;
-  border: 2px solid lightblue;
+  box-shadow: 0px 6px 2px 0px rgba(240,240,240,1);
 `;
-const Row = styled.div`
+const Row = styled.div<{align: string}>`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: ${({align}) => align};
   padding: 5px;
 `;
 const AlignLeft = styled.div`
