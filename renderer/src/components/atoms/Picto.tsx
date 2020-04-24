@@ -7,6 +7,7 @@ import { ReactComponent as ArrowDownIcon } from '../../assets/icons/arrow_down.s
 import { ReactComponent as AddIcon } from '../../assets/icons/add.svg';
 import { ReactComponent as ArrowBackIcon } from '../../assets/icons/arrow_back.svg';
 import { ReactComponent as TickIcon } from '../../assets/icons/tick.svg';
+import { ReactComponent as EyeIcon } from '../../assets/icons/eye.svg';
 
 type SizeType = number | string;
 
@@ -31,6 +32,7 @@ const svgs: SvgsType = {
   add: AddIcon,
   arrowBack: ArrowBackIcon,
   tick: TickIcon,
+  eye: EyeIcon
 };
 
 const Picto: React.SFC <Props> = props => {
