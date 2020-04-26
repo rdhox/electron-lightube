@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   onHandleChange: (v:string) => void;
+  onHandleFocus?: () => void;
   placeholder?:string;
   value: string;
   length?: string;
@@ -23,6 +24,7 @@ const Input: React.SFC<Props> = props => {
     length,
     fontSize,
     height,
+    onHandleFocus
   } = props;
 
   return (
@@ -30,6 +32,7 @@ const Input: React.SFC<Props> = props => {
       value={value}
       placeholder={placeholder}
       onChange={handleChange}
+      onFocus={onHandleFocus}
       length={length}
       fontSize={fontSize}
       height={height}

@@ -1,24 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 // import components
-import VideosDisplay from './VideosDisplay';
 import VideoPage from './VideoPage';
 
 interface Props {};
 
 const Main: React.SFC = props => {
-  let location = useLocation();
-  console.log(location);
   return (
     <Container>
       <Switch>
-        <Route exact patch="/">
-          <VideosDisplay />
-        </Route>
-        <Route patch="video/:idVideo">
-          <VideoPage />
-        </Route>
+        <Route exact path="/" render={() => <div>Hello</div>} />
+        <Route path="/video/:idVideo" component={VideoPage} />
       </Switch>
     </Container>
   );

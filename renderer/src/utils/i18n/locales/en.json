@@ -15,6 +15,9 @@
           "yes": "yes",
           "no": "no"
         }
+      },
+      "ChannelBar": {
+        "subscribe": "Subscribe"
       }
     },
     "organisms":{}

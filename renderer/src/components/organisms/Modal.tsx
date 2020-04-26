@@ -4,25 +4,27 @@ import styled from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
+  header?: boolean;
 };
 
 
 const Modal: React.SFC<Props> = props => {
 
   const {
-    children
+    children,
+    header
   } = props;
 
   return ReactDOM.createPortal(
-    <Container>{children}</Container>
+    <Container header={header} >{children}</Container>
   , document.getElementById('root'));
 }
 
-const Container = styled.div`
+const Container = styled.div<{header?: boolean}>`
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
+  top: ${({header}) => header ? '150px': '0px'};
   bottom: 0;
   background-color: rgba(44,62,80 ,0.2);
   display: flex;

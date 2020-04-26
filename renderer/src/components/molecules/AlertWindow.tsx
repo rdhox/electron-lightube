@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../store';
+import { ModalAlert } from '../../store/modelApp';
 // import components
 import ButtonText from '../atoms/ButtonText';
 
@@ -21,7 +22,7 @@ const AlertWindow: React.SFC = props => {
       actionYes();
     }
   }
-  const displayModalAlert = useApp(appState => appState.state.displayModalAlert);
+  const displayModalAlert: ModalAlert = useApp(appState => appState.state.displayModalAlert);
 
   const {
     title,

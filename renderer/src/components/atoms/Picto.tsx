@@ -8,6 +8,10 @@ import { ReactComponent as AddIcon } from '../../assets/icons/add.svg';
 import { ReactComponent as ArrowBackIcon } from '../../assets/icons/arrow_back.svg';
 import { ReactComponent as TickIcon } from '../../assets/icons/tick.svg';
 import { ReactComponent as EyeIcon } from '../../assets/icons/eye.svg';
+import { ReactComponent as PeopleIcon } from '../../assets/icons/people.svg';
+import { ReactComponent as SubscribeIcon } from '../../assets/icons/subscribe.svg';
+import { ReactComponent as UnsubscribeIcon } from '../../assets/icons/unsubscribe.svg';
+import { ReactComponent as NoImageIcon } from '../../assets/icons/noimage.svg';
 
 type SizeType = number | string;
 
@@ -32,7 +36,11 @@ const svgs: SvgsType = {
   add: AddIcon,
   arrowBack: ArrowBackIcon,
   tick: TickIcon,
-  eye: EyeIcon
+  eye: EyeIcon,
+  people: PeopleIcon,
+  subscribe: SubscribeIcon,
+  unsubscribe: UnsubscribeIcon,
+  noimage: NoImageIcon,
 };
 
 const Picto: React.SFC <Props> = props => {

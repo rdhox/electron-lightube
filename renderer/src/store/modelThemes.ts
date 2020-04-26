@@ -2,12 +2,12 @@ import uniqid from 'uniqid';
 import { Model } from './index';
 import { apiApp } from './index';
 
-interface Theme {
+export interface Theme {
   id: keyof Themes;
   name: string;
 };
 
-interface Themes {
+export interface Themes {
   [key: string]: Theme;
 };
 

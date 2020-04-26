@@ -6,9 +6,8 @@ interface Props {};
 
 const VideoPage: React.SFC<Props> = props => {
   const { idVideo } = useParams();
-  console.log(idVideo);
   return (
-    <Container>Hello</Container>
+    <Container>Video Page</Container>
   );
 }
 

@@ -13,7 +13,7 @@ export async function request(
   if (body) {
     if (method === 'GET') {
       const query = body;
-      endPoint = `${endPoint}?${query}`;
+      endPoint = `${endPoint}/${query}`;
       body = false;
     } else {
       body = JSON.stringify(body);

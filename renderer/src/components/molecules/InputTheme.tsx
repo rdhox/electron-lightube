@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import { useThemes } from '../../store';
+import { useThemes, ReducerEffect } from '../../store';
 // import components
 import Input from '../atoms/Input';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -19,7 +19,7 @@ const InputTheme: React.SFC<Props> = props => {
   const [ newTheme, setNewTheme ] = useState<string>('');
 
   const { t } = useTranslation();
-  const addTheme = useThemes(appThemes => appThemes.effects.addTheme);
+  const addTheme: ReducerEffect = useThemes(appThemes => appThemes.effects.addTheme);
 
   return (
     <Container>
