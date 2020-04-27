@@ -4,6 +4,11 @@ import app from './modelApp';
 import settings from './modelSettings';
 import themes from './modelThemes';
 
+// Type State
+export interface StateRef<S> {
+  current: S;
+};
+
 // ***** Types Model *****
 export type ReducerEffect = (...args: any[]) => void;
 

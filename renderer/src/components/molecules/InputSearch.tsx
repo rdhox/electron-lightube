@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { useApp, ReducerEffect } from '../../store';
+import { apiApp, ReducerEffect } from '../../store';
 // import components
 import Input from '../atoms/Input';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -23,8 +23,8 @@ const InputSearch: React.SFC<Props> = props => {
     }
   }
 
-  const launchSearch: ReducerEffect = useApp(appState => appState.effects.launchSearch);
-  const setIsSearchModalDisplayed: ReducerEffect = useApp(appState => appState.reducers.setIsSearchModalDisplayed);
+  const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
+  const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
   const [searchValue, setSearchValue] = useState<string>("");
   const { t } = useTranslation();
 

@@ -121,6 +121,12 @@ const app: Model<State> = (update, get) => ({
         isSearchModalDisplayed
       }));
     },
+    setVideosToDisplay(videosToDisplay) {
+      update(state => ({
+        ...state,
+        videosToDisplay
+      }));
+    },
     setChannelInfos(channelInfos) {
       update(state => ({
         ...state,
@@ -133,6 +139,15 @@ const app: Model<State> = (update, get) => ({
         showChannel
       }));
     },
+    resetSearch() {
+      update(state => ({
+        ...state,
+        currentSearch: '',
+        videosToDisplay: [],
+        channelInfos: {},
+        isSearchModalDisplayed: false
+      }));
+    }
   },
   effects: {
     launchSearch: async function(query: string, page: number = 1) {

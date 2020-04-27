@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import { useThemes, useApp, ReducerEffect } from '../../store';
+import { useThemes, useApp, apiApp, apiThemes, ReducerEffect } from '../../store';
 import { Themes } from '../../store/modelThemes';
 // import components
 import Select from '../atoms/Select';
@@ -44,11 +44,11 @@ const ThemesManager: React.SFC<Props> = props => {
 
   const { t } = useTranslation();
   const themes: Themes = useThemes(themesState => themesState.state.themes);
-  const deleteTheme: ReducerEffect = useThemes(themesState => themesState.effects.deleteTheme);
+  const deleteTheme: ReducerEffect = apiThemes.getState().effects.deleteTheme;
   const selectedTheme: string = useApp(appState => appState.state.selectedTheme);
-  const setSelectedTheme: ReducerEffect = useApp(appState => appState.reducers.setSelectedTheme);
-  const setIsDeleteThemeDisplayed: ReducerEffect = useApp(appState => appState.reducers.setIsDeleteThemeDisplayed);
-  const setDisplayModalAlert: ReducerEffect = useApp(appState => appState.reducers.setDisplayModalAlert);
+  const setSelectedTheme: ReducerEffect = apiApp.getState().reducers.setSelectedTheme;
+  const setIsDeleteThemeDisplayed: ReducerEffect = apiApp.getState().reducers.setIsDeleteThemeDisplayed;
+  const setDisplayModalAlert: ReducerEffect = apiApp.getState().reducers.setDisplayModalAlert;
 
   useEffect(() => {
     const opt = Object.keys(themes).reduce((acc, e) => {

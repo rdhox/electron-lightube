@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 
-import { useApp, ReducerEffect } from '../../store';
+import { apiApp, ReducerEffect } from '../../store';
 // import components
 import ButtonIcon from '../atoms/ButtonIcon';
 import ChannelBox from './ChannelBox';
@@ -12,12 +12,26 @@ const ChannelBar: React.SFC<Props> = props => {
 
   function back() {
     setShowChannel(false);
+    setChannelInfos({});
   }
 
-  const showChannel: boolean = useApp(appState => appState.state.showChannel);
-  const setShowChannel: ReducerEffect = useApp(appState => appState.reducers.setShowChannel);
+  const [ display, setDisplay ] = useState<boolean>(false);
 
-  if(showChannel) {
+  const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
+  const setChannelInfos: ReducerEffect = apiApp.getState().reducers.setChannelInfos;
+
+  useEffect(() => {
+    const unsubShowChannel = apiApp.subscribe(
+      (showChannel: boolean) => setDisplay(showChannel),
+      appState => appState.state.showChannel
+    );
+
+    return () => {
+      unsubShowChannel();
+    }
+  }, []);
+
+  if(display) {
 
     return (
       <Container>
@@ -47,7 +61,18 @@ const ChannelBar: React.SFC<Props> = props => {
   return null;
 }
 
+const apparition = keyframes`
+  0% {
+    left: -700px;
+  }
+  100% {
+    left: 0px;
+  }
+`;
+
 const Container = styled.div`
+  position: relative;
+  left: -700px;
   box-sizing: border-box;
   display: flex;
   justify-content: flex-start;
@@ -55,6 +80,11 @@ const Container = styled.div`
   padding: 3px 20px;
   width: 100%;
   height: 75px;
+  animation-name: ${apparition};
+  animation-timing-function: ease-out;
+  animation-duration: 0.3s;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
 `;
 
 

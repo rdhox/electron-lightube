@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { useApp, ReducerEffect } from '../../store';
+import { apiApp, ReducerEffect } from '../../store';
 import {formatLength} from '../../utils/functions';
 // import components
 import Picto from '../atoms/Picto';
@@ -18,6 +18,8 @@ interface Props {
   publishedText: string;
   length: number;
   description: string;
+  index: number;
+  onChannel: boolean;
 };
 
 const VideoBox: React.SFC<Props> = props => {
@@ -26,7 +28,7 @@ const VideoBox: React.SFC<Props> = props => {
     fetchchannelInfos(authorId);
   }
 
-  const fetchchannelInfos: ReducerEffect = useApp(appState => appState.effects.fetchchannelInfos);
+  const fetchchannelInfos: ReducerEffect = apiApp.getState().effects.fetchchannelInfos;
 
   const {
     videoId,
@@ -38,17 +40,23 @@ const VideoBox: React.SFC<Props> = props => {
     publishedText,
     length,
     description,
+    index,
+    onChannel,
   } = props;
 
+  const delay = (index % 20) / 8;
+
   return (
-    <Container>
+    <Container delay={delay}>
       <Column width={210}>
-        <Row>
-          <LinkAction 
-            onClick={handleClickAuthor}
-          >
-            <Author>{author}</Author>
-          </LinkAction>
+        <Row height={onChannel ? 10 : 'auto'}>
+          {!onChannel && (
+            <LinkAction 
+              onClick={handleClickAuthor}
+            >
+              <Author>{author}</Author>
+            </LinkAction>
+          )}
         </Row>
         <Row>
           <Link to={`/video/${videoId}`} >
@@ -85,7 +93,21 @@ const VideoBox: React.SFC<Props> = props => {
   );
 }
 
-const Container = styled.div`
+const apparition = keyframes`
+  0% {
+    opacity: 0;
+    left: 400px;
+  }
+  100% {
+    opacity: 1;
+    left: 0px;
+  }
+`;
+
+const Container = styled.div<{delay: number}>`
+  position: relative;
+  opacity: 0;
+  left: 400px;
   box-sizing: border-box; 
   width: 100%;
   height: 180px;
@@ -93,6 +115,12 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  animation-name: ${apparition};
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-delay: ${({delay}) => `${delay}s`};
+  animation-fill-mode: forwards;
+  border-bottom: solid 1px #F5F5F5;
 `;
 
 const LinkStyle = styled(Link)`
@@ -113,8 +141,16 @@ const LinkAction = styled.span`
   }
 `;
 
-const Row = styled.div`
+const Row = styled.div<{height?: number | string}>`
   width: 100%;
+  height: ${({height}) => {
+    if(typeof height === 'string') {
+      return height;
+    } else if (typeof height == 'number') {
+      return `${height}px`;
+    }
+    return 'auto';
+  }};
   display: flex;
   justify-content: space-between;
   align-items: center;

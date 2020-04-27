@@ -1,32 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { useApp } from '../../store';
-import { Channel, VideoDetails } from '../../store/modelApp';
+import { apiApp, ReducerEffect } from '../../store';
 // import components
 import VideosDisplay from '../molecules/VideosDisplay';
 import ChannelBar from '../molecules/ChannelBar';
+import ButtonIcon from '../atoms/ButtonIcon';
 
 interface Props {};
 
 const SearchModal: React.SFC<Props> = props => {
 
-  const videosToDisplay: VideoDetails[] = useApp(appState => appState.state.videosToDisplay);
-  const channelInfos: Channel = useApp(appState => appState.state.channelInfos);
+  function closeModal():void {
+    resetSearch();
+  }
+  const resetSearch: ReducerEffect = apiApp.getState().reducers.resetSearch;
 
   return (
     <Container>
+      <Row>
+        <ButtonRotate>
+          <ButtonIcon
+            icon="add"
+            handleClick={closeModal}
+            widthIcon={35}
+            heightIcon={35}
+            width={35}
+            height={40}
+          />
+        </ButtonRotate>
+      </Row>
       <ChannelBar />
-      <VideosDisplay
-        videosSearch={videosToDisplay}
-        videosChannel={channelInfos}
-      />
+      <VideosDisplay />
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
+  display:'flex';
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
@@ -36,6 +47,19 @@ const Container = styled.div`
   min-height: 100px;
   background-color: white;
   border-bottom-left-radius: 10px;
+  overflow: hidden;
+`;
+
+const Row = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+`;
+
+const ButtonRotate = styled.div`
+  transform: rotate(45deg);
 `;
 
 export default SearchModal;
