@@ -106,6 +106,7 @@ const Container = styled.div`
   width: 240px;
   height: 60px;
   padding: 5px;
+  margin: 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

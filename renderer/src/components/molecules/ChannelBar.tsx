@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { apiApp, ReducerEffect } from '../../store';
+import { apiApp, apiThemes, ReducerEffect, StateRef } from '../../store';
+import { Channel } from '../../store/modelApp';
+import { ChannelsInThemes, ChannelSaved } from '../../store/modelThemes';
 // import components
 import ButtonIcon from '../atoms/ButtonIcon';
 import ChannelBox from './ChannelBox';
 
 interface Props {};
+
+interface Subscribed {
+  authorId: string;
+  sub: boolean;
+}
 
 const ChannelBar: React.SFC<Props> = props => {
 
@@ -15,19 +22,91 @@ const ChannelBar: React.SFC<Props> = props => {
     setChannelInfos({});
   }
 
+  function handleChannel(): void {
+    if(subscribed.sub) {
+      removeChannelToTheme(authorId);
+    } else {
+      const newSub: ChannelSaved = {
+        image,
+        author,
+        authorId,
+        subCount,
+        description
+      };
+      addChannelToTheme(newSub);
+    }
+  }
+
   const [ display, setDisplay ] = useState<boolean>(false);
+  const [ image, setImage ] = useState<string>('');
+  const [ author, setAuthor ] = useState<string>('');
+  const [ authorId, setAuthorId ] = useState<string>('');
+  const [ subCount, setSubCount ] = useState<number>(null);
+  const [ description, setDescription ] = useState<string>('');
+  const [ subscribed, setSubscribed ] = useState<Subscribed>({
+    authorId: '',
+    sub: false
+  });
 
   const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
   const setChannelInfos: ReducerEffect = apiApp.getState().reducers.setChannelInfos;
+  const addChannelToTheme: ReducerEffect = apiThemes.getState().effects.addChannelToTheme;
+  const removeChannelToTheme: ReducerEffect = apiThemes.getState().effects.removeChannelToTheme;
+
+  const channelsRef: StateRef<ChannelsInThemes> = useRef(apiThemes.getState().state.channels);
+
+  function checkSubscribed() {
+    const allSubIds = Object.keys(channelsRef.current).reduce((acc, key) => {
+      acc = [
+        ...acc,
+        ...channelsRef.current[key]
+      ];
+      return acc
+    }, [])
+      .map(channel => channel.authorId);
+
+    setSubscribed(state => {
+      const sub: boolean = allSubIds.includes(state.authorId);
+      return ({
+        ...state,
+        sub
+      })
+    });
+  }
+
 
   useEffect(() => {
     const unsubShowChannel = apiApp.subscribe(
       (showChannel: boolean) => setDisplay(showChannel),
       appState => appState.state.showChannel
     );
+    const unsubChannelInfos = apiApp.subscribe(
+      (channelInfos: Channel) => {
+        if(Object.keys(channelInfos).length > 0) {
+          setImage(channelInfos.authorThumbnails[3].url);
+          setAuthor(channelInfos.author);
+          setAuthorId(channelInfos.authorId);
+          setSubCount(channelInfos.subCount);
+          setDescription(channelInfos.description);
+          setSubscribed({authorId: channelInfos.authorId, sub: false});
+          checkSubscribed();
+        }
+      },
+      appState => appState.state.channelInfos
+    );
+
+    const unsubChannelSubscribe = apiThemes.subscribe(
+      (channels: ChannelsInThemes) => {
+        channelsRef.current = channels;
+        checkSubscribed();
+      },
+      themesState => themesState.state.channels
+    );
 
     return () => {
       unsubShowChannel();
+      unsubChannelInfos();
+      unsubChannelSubscribe();
     }
   }, []);
 
@@ -43,15 +122,20 @@ const ChannelBar: React.SFC<Props> = props => {
           height={30}
           handleClick={back}
         />
-        <ChannelBox />
+        <ChannelBox
+          image={image}
+          author={author}
+          subCount={subCount}
+          description={description}
+        />
         <div style={{ marginLeft: "auto"}}>
           <ButtonIcon
-            icon="subscribe"
+            icon={subscribed.sub ? "unsubscribe" : "subscribe"}
             widthIcon={30}
             heightIcon={30}
             width={40}
             height={40}
-            handleClick={() => {}}
+            handleClick={handleChannel}
           />
         </div>
       </Container>

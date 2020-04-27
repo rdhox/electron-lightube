@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import InputSearch from '../molecules/InputSearch';
 import ButtonIcon from '../atoms/ButtonIcon';
 import ThemesManager from '../molecules/ThemesManager';
+import ListChannels from '../molecules/ListChannels';
 
 
 export interface Props {}
@@ -30,8 +31,18 @@ const Header: React.SFC <Props> = () => {
         </AlignLeft>
         <InputSearch />
       </Row>
-      <Row align="flex-start">
+      <Row align="space-between">
         <ThemesManager />
+        <ListChannels />
+        <ButtonIcon
+            icon="arrowDown"
+            handleClick={() => {}}
+            backgroundColor="transparent"
+            width={50}
+            height={50}
+            widthIcon={40}
+            heightIcon={40}
+          />
       </Row>
     </Container>
   );
@@ -48,6 +59,7 @@ const Row = styled.div<{align: string}>`
   width: 100%;
   display: flex;
   justify-content: ${({align}) => align};
+  align-items: center;
   padding: 5px;
 `;
 const AlignLeft = styled.div`

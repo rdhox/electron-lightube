@@ -1,39 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { apiApp } from '../../store';
-import { Channel } from '../../store/modelApp';
 // import components
 import Picto from '../atoms/Picto';
 
-interface Props {};
+interface Props {
+  image: string;
+  author: string;
+  subCount: number;
+  description: string;
+};
 
 const ChannelBox: React.SFC<Props> = props => {
 
-  const [ image, setImage ] = useState<string>('');
-  const [ author, setAuthor ] = useState<string>('');
-  const [ subCount, setSubCount ] = useState<number>(null);
-  const [ description, setDescription ] = useState<string>('');
-
-  useEffect(() => {
-    function updateInfos(channelInfos) {
-      setImage(channelInfos.authorThumbnails[3].url);
-      setAuthor(channelInfos.author);
-      setSubCount(channelInfos.subCount);
-      setDescription(channelInfos.description);
-    }
-    const unsubChannelInfos = apiApp.subscribe(
-      (channelInfos: Channel) => {
-        if(Object.keys(channelInfos).length > 0) {
-          updateInfos(channelInfos);
-        }
-      },
-      appState => appState.state.channelInfos
-    );
-    return () => {
-      unsubChannelInfos();
-    }
-  }, []);
+  const {
+    image,
+    author,
+    subCount,
+    description,
+  } = props;
 
   return (
     <Container>
