@@ -34,15 +34,17 @@ const Header: React.SFC <Props> = () => {
       <Row align="space-between">
         <ThemesManager />
         <ListChannels />
-        <ButtonIcon
-            icon="arrowDown"
-            handleClick={() => {}}
-            backgroundColor="transparent"
-            width={50}
-            height={50}
-            widthIcon={40}
-            heightIcon={40}
-          />
+        <div style={{ alignSelf: "flex-end"}} >
+          <ButtonIcon
+              icon="arrowDown"
+              handleClick={() => {}}
+              backgroundColor="transparent"
+              width={50}
+              height={50}
+              widthIcon={40}
+              heightIcon={40}
+            />
+        </div>
       </Row>
     </Container>
   );

@@ -25,10 +25,10 @@ interface Props {
 const VideoBox: React.SFC<Props> = props => {
 
   function handleClickAuthor(): void {
-    fetchchannelInfos(authorId);
+    fetchChannelInfos(authorId);
   }
 
-  const fetchchannelInfos: ReducerEffect = apiApp.getState().effects.fetchchannelInfos;
+  const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
 
   const {
     videoId,

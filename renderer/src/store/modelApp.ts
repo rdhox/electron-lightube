@@ -1,6 +1,7 @@
 import { Model } from './index';
 import {
   getResultGlobalSearch,
+  getInfosFromChannel,
   getVideosFromChannel
 } from '../services/apiService';
 
@@ -18,7 +19,7 @@ export interface ModalAlert {
 export interface Channel {
   author: string;
   authorId: string;
-  authorThumbnails: Thumbnail[];
+  authorThumbnails: string;
   subCount: number;
   description: string;
   latestVideos: VideoDetails[];
@@ -145,7 +146,8 @@ const app: Model<State> = (update, get) => ({
         currentSearch: '',
         videosToDisplay: [],
         channelInfos: {},
-        isSearchModalDisplayed: false
+        isSearchModalDisplayed: false,
+        selectedChannel: '',
       }));
     }
   },
@@ -178,11 +180,11 @@ const app: Model<State> = (update, get) => ({
         }));
       }
     },
-    fetchchannelInfos: async function(channel: string) {
+    fetchChannelInfos: async function(channel: string) {
       const setShowChannel = get().reducers.setShowChannel;
       setShowChannel(true);
 
-      const result: Channel = await getVideosFromChannel(channel);
+      const result = await getInfosFromChannel(channel);
       if (result) {
         const {
           author,
@@ -198,14 +200,58 @@ const app: Model<State> = (update, get) => ({
           channelInfos: {
             author,
             authorId,
-            authorThumbnails,
+            authorThumbnails: authorThumbnails[3].url,
             subCount,
             description,
             latestVideos,
           },
         }));
       }
-    }
+    },
+    fetchChannelVideo: async function(
+      authorId: string= '',
+      page: number = 1,
+      image: string = '',
+      author: string = '',
+      subCount: string = '',
+      description: string = ''
+      ){
+      
+      if(page < 2) {
+        update(state => ({
+          ...state,
+          channelInfos: {},
+        }));
+      }
+      const result: VideoDetails[] = await getVideosFromChannel(`${authorId}?page=${page}`);
+      if (result) {
+        if(page === 1) {
+          update(state => ({
+            ...state,
+            channelInfos: {
+              author,
+              authorId,
+              authorThumbnails: image,
+              subCount,
+              description,
+              latestVideos: result,
+            },
+          }));
+        } else if (page > 1) {
+          console.log(result);
+          update(state => ({
+            ...state,
+            channelInfos: {
+              ...state.channelInfos,
+              latestVideos: [
+                ...state.channelInfos.latestVideos,
+                ...result
+              ],
+            },
+          }));
+        }
+      }
+    },
   }
 });
 

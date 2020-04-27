@@ -5,6 +5,7 @@ type apiRequest = (data: any) => any;
 export interface API {
   url: string;
   getResultGlobalSearch: apiRequest;
+  getInfosFromChannel: apiRequest;
   getVideosFromChannel: apiRequest;
 }
 
@@ -16,7 +17,8 @@ class tubeApi implements API {
   // search
   getResultGlobalSearch = data => request('/api/v1/search', 'GET', data, this.url);
   // channels
-  getVideosFromChannel = data => request('/api/v1/channels', 'GET', data, this.url);
+  getInfosFromChannel = data => request('/api/v1/channels', 'GET', data, this.url);
+  getVideosFromChannel = data => request('/api/v1/channels/videos', 'GET', data, this.url);
 
 }
 

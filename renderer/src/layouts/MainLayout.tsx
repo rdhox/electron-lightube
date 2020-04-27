@@ -18,6 +18,7 @@ const MainLayout : React.SFC = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `;
  
 export default MainLayout;

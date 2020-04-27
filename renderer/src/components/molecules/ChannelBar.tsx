@@ -18,8 +18,8 @@ interface Subscribed {
 const ChannelBar: React.SFC<Props> = props => {
 
   function back() {
-    setShowChannel(false);
     setChannelInfos({});
+    setShowChannel(false);
   }
 
   function handleChannel(): void {
@@ -37,23 +37,28 @@ const ChannelBar: React.SFC<Props> = props => {
     }
   }
 
-  const [ display, setDisplay ] = useState<boolean>(false);
-  const [ image, setImage ] = useState<string>('');
-  const [ author, setAuthor ] = useState<string>('');
-  const [ authorId, setAuthorId ] = useState<string>('');
-  const [ subCount, setSubCount ] = useState<number>(null);
-  const [ description, setDescription ] = useState<string>('');
-  const [ subscribed, setSubscribed ] = useState<Subscribed>({
-    authorId: '',
-    sub: false
-  });
-
   const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
   const setChannelInfos: ReducerEffect = apiApp.getState().reducers.setChannelInfos;
   const addChannelToTheme: ReducerEffect = apiThemes.getState().effects.addChannelToTheme;
   const removeChannelToTheme: ReducerEffect = apiThemes.getState().effects.removeChannelToTheme;
 
+  const selectedChannel: string = apiApp.getState().reducers.selectedChannel;
   const channelsRef: StateRef<ChannelsInThemes> = useRef(apiThemes.getState().state.channels);
+  const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
+  const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
+  const loadingRef: StateRef<boolean> = useRef(apiApp.getState().state.loading);
+
+  const [ display, setDisplay ] = useState<boolean>(showChannelRef.current);
+  const [ loading, setLoading ] = useState<boolean>(loadingRef.current);
+  const [ image, setImage ] = useState<string>(channelInfosRef.current.authorThumbnails ? channelInfosRef.current.authorThumbnails : '');
+  const [ author, setAuthor ] = useState<string>(channelInfosRef.current.author ? channelInfosRef.current.author : '');
+  const [ authorId, setAuthorId ] = useState<string>(channelInfosRef.current.authorId ? channelInfosRef.current.authorId : '');
+  const [ subCount, setSubCount ] = useState<number>(channelInfosRef.current.subCount ? channelInfosRef.current.subCount : null);
+  const [ description, setDescription ] = useState<string>(channelInfosRef.current.description ? channelInfosRef.current.description : '');
+  const [ subscribed, setSubscribed ] = useState<Subscribed>({
+    authorId: '',
+    sub: false
+  });
 
   function checkSubscribed() {
     const allSubIds = Object.keys(channelsRef.current).reduce((acc, key) => {
@@ -77,13 +82,16 @@ const ChannelBar: React.SFC<Props> = props => {
 
   useEffect(() => {
     const unsubShowChannel = apiApp.subscribe(
-      (showChannel: boolean) => setDisplay(showChannel),
+      (showChannel: boolean) => {
+        showChannelRef.current = showChannel;
+        setDisplay(showChannel);
+      },
       appState => appState.state.showChannel
     );
     const unsubChannelInfos = apiApp.subscribe(
       (channelInfos: Channel) => {
         if(Object.keys(channelInfos).length > 0) {
-          setImage(channelInfos.authorThumbnails[3].url);
+          setImage(channelInfos.authorThumbnails);
           setAuthor(channelInfos.author);
           setAuthorId(channelInfos.authorId);
           setSubCount(channelInfos.subCount);
@@ -103,10 +111,19 @@ const ChannelBar: React.SFC<Props> = props => {
       themesState => themesState.state.channels
     );
 
+    const unsubLoading = apiApp.subscribe(
+      (loading: boolean) => {
+        loadingRef.current = loading;
+        setLoading(loading);
+      },
+      appState => appState.state.loading
+    );
+
     return () => {
       unsubShowChannel();
       unsubChannelInfos();
       unsubChannelSubscribe();
+      unsubLoading();
     }
   }, []);
 
@@ -114,30 +131,34 @@ const ChannelBar: React.SFC<Props> = props => {
 
     return (
       <Container>
-        <ButtonIcon
-          icon="arrowBack"
-          widthIcon={20}
-          heightIcon={20}
-          width={30}
-          height={30}
-          handleClick={back}
-        />
+        {selectedChannel === '' && (
+          <ButtonIcon
+            icon="arrowBack"
+            widthIcon={20}
+            heightIcon={20}
+            width={30}
+            height={30}
+            handleClick={back}
+          />
+        )}
         <ChannelBox
           image={image}
           author={author}
           subCount={subCount}
           description={description}
         />
-        <div style={{ marginLeft: "auto"}}>
-          <ButtonIcon
-            icon={subscribed.sub ? "unsubscribe" : "subscribe"}
-            widthIcon={30}
-            heightIcon={30}
-            width={40}
-            height={40}
-            handleClick={handleChannel}
-          />
-        </div>
+        {!loading && (
+          <div style={{ marginLeft: "auto"}}>
+            <ButtonIcon
+              icon={subscribed.sub ? "unsubscribe" : "subscribe"}
+              widthIcon={30}
+              heightIcon={30}
+              width={40}
+              height={40}
+              handleClick={handleChannel}
+            />
+          </div>
+        )}
       </Container>
     );
   }

@@ -19,8 +19,12 @@ const VideosDisplay: React.SFC<Props> = props => {
     } = refContainer.current;
 
     if ( scrollTop + clientHeight >= scrollHeight) {
-      if(!loadingRef.current && !showChannelRef.current) {
+      if(!loadingRef.current && selectedChannelRef.current === '') {
         launchSearch(currentSearchRef.current, page + 1);
+        setPage(p => p + 1);
+      }
+      if(!loadingRef.current && selectedChannelRef.current !== '') {
+        fetchChannelVideo(selectedChannelRef.current, page + 1);
         setPage(p => p + 1);
       }
     }
@@ -34,9 +38,11 @@ const VideosDisplay: React.SFC<Props> = props => {
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
   const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
   const currentSearchRef: StateRef<string> = useRef(apiApp.getState().state.currentSearch);
+  const selectedChannelRef: StateRef<string> = useRef(apiApp.getState().state.selectedChannel);
   const loadingRef: StateRef<boolean> = useRef(apiApp.getState().state.loading);
 
   const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
+  const fetchChannelVideo: ReducerEffect = apiApp.getState().effects.fetchChannelVideo;
 
   function updateList(showChannel) {
     if(!showChannel) {
@@ -74,6 +80,10 @@ const VideosDisplay: React.SFC<Props> = props => {
       (currentSearch: string) => currentSearchRef.current = currentSearch,
       appState => appState.state.currentSearch
     );
+    const unsubSelectedChannel = apiApp.subscribe(
+      (selectedChannel: string) => selectedChannelRef.current = selectedChannel,
+      appState => appState.state.selectedChannel
+    );
     const unsubLoading = apiApp.subscribe(
       (loading: boolean) => loadingRef.current = loading,
       appState => appState.state.loading
@@ -84,6 +94,7 @@ const VideosDisplay: React.SFC<Props> = props => {
       unsubVideosToDisplay();
       unsubChannelInfos();
       unsubCurrentSearch();
+      unsubSelectedChannel();
       unsubLoading();
     }
   }, []);
@@ -138,7 +149,7 @@ const Container = styled.div`
   padding: 20px;
   display: flex;
   width: 720px;
-  max-height: 750px;
+  max-height: 450px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;

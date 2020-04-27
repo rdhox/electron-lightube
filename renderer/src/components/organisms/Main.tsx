@@ -21,6 +21,7 @@ const Container = styled.main`
   min-height:400px;
   border: solid 1px red;
   padding: 10px;
+  overflow-x: hidden;
 `;
 
 export default Main;
