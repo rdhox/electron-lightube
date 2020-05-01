@@ -19,8 +19,7 @@ const Main: React.SFC = props => {
 
 const Container = styled.main`
   min-height:400px;
-  border: solid 1px red;
-  padding: 10px;
+  padding: 8px 0px;
   overflow-x: hidden;
 `;
 
