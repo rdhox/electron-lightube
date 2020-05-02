@@ -3,12 +3,14 @@ import {
   getResultGlobalSearch,
   getInfosFromChannel,
   getVideosFromChannel,
-  getVideo
+  getVideo,
+  getComments
 } from '../services/apiService';
 import {
   Channel,
   VideoDetails,
-  Video
+  Video,
+  IComments
 } from './apiType';
 
 export interface ModalAlert {
@@ -23,6 +25,7 @@ export interface ModalAlert {
 }
 
 interface State {
+  locale: string;
   loading: boolean;
   currentSearch: string;
   selectedTheme: string;
@@ -30,6 +33,7 @@ interface State {
   selectedVideo: Video;
   videosToDisplay: VideoDetails[];
   channelInfos: Channel;
+  commentsCollection: IComments;
   isDeleteThemeDisplayed: boolean;
   displayModalAlert: ModalAlert;
   isSearchModalDisplayed: boolean;
@@ -38,6 +42,7 @@ interface State {
 
 const app: Model<State> = (update, get) => ({
   state: {
+    locale: 'en',
     loading: false,
     currentSearch:'',
     selectedTheme: "0",
@@ -45,12 +50,19 @@ const app: Model<State> = (update, get) => ({
     selectedVideo: {} as Video,
     videosToDisplay: [],
     channelInfos: {} as Channel,
+    commentsCollection: {} as IComments,
     isDeleteThemeDisplayed: false,
     displayModalAlert: {},
     isSearchModalDisplayed: false,
     showChannel: false,
   },
   reducers: {
+    setLocale(locale) {
+      update(state => ({
+        ...state,
+        locale
+      }));
+    },
     setCurrentSearch(currentSearch) {
       update(state => ({
         ...state,
@@ -103,6 +115,12 @@ const app: Model<State> = (update, get) => ({
       update(state => ({
         ...state,
         channelInfos
+      }));
+    },
+    setCommentsCollection(commentsCollection) {
+      update(state => ({
+        ...state,
+        commentsCollection
       }));
     },
     setShowChannel(showChannel) {
@@ -229,6 +247,15 @@ const app: Model<State> = (update, get) => ({
         update(state => ({
           ...state,
           selectedVideo: result
+        }))
+      }
+    },
+    fetchComments: async function(idVideo: string) {
+      const result: IComments = await getComments(idVideo);
+      if (result) {
+        update(state => ({
+          ...state,
+          commentsCollection: result
         }))
       }
     }

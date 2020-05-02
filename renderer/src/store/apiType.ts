@@ -116,3 +116,37 @@ export interface Video {
   captions: Caption[];
   recommendedVideos: RecommendedVideo[];
 }
+
+export interface CreatorHeart {
+  creatorThumbnail: string;
+  creatorName: string;
+}
+
+export interface Replies {
+  replyCount: number;
+  continuation: string;
+}
+
+export interface IComment {
+  author: string;
+  authorThumbnails: AuthorThumbnail[];
+  authorId: string;
+  authorUrl: string;
+  isEdited: boolean;
+  content: string;
+  contentHtml: string;
+  published: number;
+  publishedText: string;
+  likeCount: number;
+  commentId: string;
+  authorIsChannelOwner: boolean;
+  creatorHeart?: CreatorHeart;
+  replies?: Replies;
+}
+
+export interface IComments {
+  commentCount?: number;
+  videoId: string;
+  comments: IComment[];
+  continuation?: string;
+}

@@ -31,8 +31,6 @@ const VideoInfos: React.SFC<Props> = props => {
   } = props;
 
   const [t] = useTranslation();
-
-  console.log(authorIcon);
   return (
     <Container>
       <Row>
@@ -71,6 +69,11 @@ const VideoInfos: React.SFC<Props> = props => {
       <Row align="flex-start">
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       </Row>
+      {descriptionHtml !== '' && (
+        <Row>
+          <Separator />
+        </Row>
+      )}
     </Container>
   );
 }

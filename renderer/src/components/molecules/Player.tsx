@@ -15,7 +15,7 @@ const Player: React.SFC<Props> = props => {
   return (
     <Container>
       <ReactPlayer
-        playing
+        playing={false}
         url={`https://www.youtube.com/watch?v=${idVideo}`}
         className="react-player"
         config={{ 

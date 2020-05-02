@@ -7,6 +7,7 @@ import { useApp, apiApp } from '../../store';
 import Suggestions from '../molecules/Suggestions';
 import Player from '../molecules/Player';
 import VideoInfos from '../molecules/VideoInfos';
+import Comments from '../molecules/Comments';
 
 interface Props {};
 
@@ -18,6 +19,7 @@ const VideoPage: React.SFC<Props> = props => {
   const resetSearch = apiApp.getState().reducers.resetSearch;
   const fetchVideo = apiApp.getState().effects.fetchVideo;
   const setSelectedVideo = apiApp.getState().reducers.setSelectedVideo;
+  const setCommentsCollection = apiApp.getState().reducers.setCommentsCollection;
 
   const selectedVideo = useApp(appState => appState.state.selectedVideo);
   const loading = useApp(appState => appState.state.loading);
@@ -25,6 +27,7 @@ const VideoPage: React.SFC<Props> = props => {
   useEffect(() => {
     if(idVideo !== video) {
       setSelectedVideo({});
+      setCommentsCollection({});
       setVideo(idVideo);
     } else if (idVideo === video){
       resetSearch();
@@ -53,6 +56,7 @@ const VideoPage: React.SFC<Props> = props => {
             authorIcon={image}
             author={selectedVideo.author}
           />
+          <Comments video={idVideo} />
       </Column>
       <Column width={30}>
         <Suggestions
@@ -80,6 +84,7 @@ const Column = styled.div<{width?: number}>`
 
 const WrapperVideo = styled.div`
   width: 100%;
+  padding-top: 5px;
 `;
 
 export default VideoPage;

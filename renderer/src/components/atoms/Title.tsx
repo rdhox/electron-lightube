@@ -23,6 +23,10 @@ const Container = styled.span<{color?: string, bold?: boolean}>`
   color: ${({color}) => color ? color : 'initial'};
   text-transform: capitalize;
   font-weight: ${({bold}) => bold ? 'bold' : 'normal'};
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 `;
 
 export default Title;

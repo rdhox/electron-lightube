@@ -8,6 +8,7 @@ export interface API {
   getInfosFromChannel: apiRequest;
   getVideosFromChannel: apiRequest;
   getVideo: apiRequest;
+  getComments: apiRequest;
 }
 
 class tubeApi implements API {
@@ -22,6 +23,8 @@ class tubeApi implements API {
   getVideosFromChannel = data => request('/api/v1/channels/videos', 'GET', data, this.url);
   // videos
   getVideo = data => request('/api/v1/videos', 'GET', data, this.url);
+  // comments
+  getComments = data => request('/api/v1/comments', 'GET', data, this.url);
 
 }
 
