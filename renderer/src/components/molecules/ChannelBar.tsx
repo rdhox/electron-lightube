@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { apiApp, apiThemes, ReducerEffect, StateRef } from '../../store';
-import { Channel } from '../../store/modelApp';
+import { Channel } from '../../store/apiType';
 import { ChannelsInThemes, ChannelSaved } from '../../store/modelThemes';
 // import components
 import ButtonIcon from '../atoms/ButtonIcon';

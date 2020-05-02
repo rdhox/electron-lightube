@@ -18,6 +18,9 @@
       },
       "ChannelBar": {
         "subscribe": "S'abonner"
+      },
+      "VideoInfos": {
+        "views": "vues"
       }
     },
     "organisms":{}

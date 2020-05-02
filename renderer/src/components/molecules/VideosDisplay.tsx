@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-import { Channel, VideoDetails } from '../../store/modelApp';
+import { Channel, VideoDetails } from '../../store/apiType';
 import { apiApp, ReducerEffect, StateRef } from '../../store';
 // import components
 import VideoBox from './VideoBox';

@@ -2,8 +2,14 @@ import { Model } from './index';
 import {
   getResultGlobalSearch,
   getInfosFromChannel,
-  getVideosFromChannel
+  getVideosFromChannel,
+  getVideo
 } from '../services/apiService';
+import {
+  Channel,
+  VideoDetails,
+  Video
+} from './apiType';
 
 export interface ModalAlert {
   title?: string;
@@ -16,47 +22,12 @@ export interface ModalAlert {
   singleButton?: boolean;
 }
 
-export interface Channel {
-  author: string;
-  authorId: string;
-  authorThumbnails: string;
-  subCount: number;
-  description: string;
-  latestVideos: VideoDetails[];
-};
-
-export interface Thumbnail {
-  url: string;
-  quality: string;
-  width: number;
-  height: number;
-};
-
-export interface VideoDetails {
-  type: string;
-  videoId: string;
-  title: string;
-  author: string;
-  authorUrl: string;
-  authorId: string;
-  videoThumbnails: Thumbnail[];
-  viewCount: number;
-  published: number;
-  publishedText: string;
-  lengthSeconds: number;
-  descriptionHtml: string;
-  description: string;
-  liveNow: boolean;
-  paid: boolean;
-  premium: boolean;
-};
-
 interface State {
   loading: boolean;
   currentSearch: string;
   selectedTheme: string;
   selectedChannel: string;
-  selectedVideo: string;
+  selectedVideo: Video;
   videosToDisplay: VideoDetails[];
   channelInfos: Channel;
   isDeleteThemeDisplayed: boolean;
@@ -71,7 +42,7 @@ const app: Model<State> = (update, get) => ({
     currentSearch:'',
     selectedTheme: "0",
     selectedChannel: "",
-    selectedVideo: "",
+    selectedVideo: {} as Video,
     videosToDisplay: [],
     channelInfos: {} as Channel,
     isDeleteThemeDisplayed: false,
@@ -252,6 +223,15 @@ const app: Model<State> = (update, get) => ({
         }
       }
     },
+    fetchVideo: async function(idVideo: string) {
+      const result: Video = await getVideo(idVideo);
+      if (result) {
+        update(state => ({
+          ...state,
+          selectedVideo: result
+        }))
+      }
+    }
   }
 });
 

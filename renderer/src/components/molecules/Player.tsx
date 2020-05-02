@@ -15,6 +15,7 @@ const Player: React.SFC<Props> = props => {
   return (
     <Container>
       <ReactPlayer
+        playing
         url={`https://www.youtube.com/watch?v=${idVideo}`}
         className="react-player"
         config={{ 
@@ -27,7 +28,7 @@ const Player: React.SFC<Props> = props => {
           }
         }}
         controls
-        width='70%'
+        width='100%'
         height='100%'
       />
       

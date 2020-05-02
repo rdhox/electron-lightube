@@ -7,7 +7,7 @@ interface Props {
   bold?: boolean
 };
 
-const SmallTitle: React.SFC<Props> = props => {
+const Title: React.SFC<Props> = props => {
   const {
     children,
     color,
@@ -19,9 +19,10 @@ const SmallTitle: React.SFC<Props> = props => {
 }
 
 const Container = styled.span<{color?: string, bold?: boolean}>`
+  font-size: 18px;
   color: ${({color}) => color ? color : 'initial'};
   text-transform: capitalize;
   font-weight: ${({bold}) => bold ? 'bold' : 'normal'};
 `;
 
-export default SmallTitle;
+export default Title;

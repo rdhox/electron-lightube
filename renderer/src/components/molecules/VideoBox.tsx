@@ -14,12 +14,13 @@ interface Props {
   author: string;
   authorId: string;
   thumbnail: string;
-  viewCount: number;
-  publishedText: string;
+  viewCount: number | string;
+  publishedText?: string;
   length: number;
-  description: string;
-  index: number;
+  description?: string;
+  index?: number;
   onChannel: boolean;
+  light?: boolean;
 };
 
 const VideoBox: React.SFC<Props> = props => {
@@ -42,22 +43,25 @@ const VideoBox: React.SFC<Props> = props => {
     description,
     index,
     onChannel,
+    light = false
   } = props;
 
   const delay = (index % 20) / 8;
 
   return (
-    <Container delay={delay}>
-      <Column width={210}>
-        <Row height={onChannel ? 10 : 'auto'}>
-          {!onChannel && (
-            <LinkAction 
-              onClick={handleClickAuthor}
-            >
-              <Author>{author}</Author>
-            </LinkAction>
-          )}
-        </Row>
+    <Container delay={delay} light={light}>
+      <Column width={210} align={light ? "center" : "space-between"}>
+        {!light && (
+          <Row height={onChannel ? 10 : 'auto'}>
+            {!onChannel && (
+              <LinkAction 
+                onClick={handleClickAuthor}
+              >
+                <Author>{author}</Author>
+              </LinkAction>
+            )}
+          </Row>
+        )}
         <Row>
           <Link to={`/video/${videoId}`} >
             <Thumbnail 
@@ -68,23 +72,45 @@ const VideoBox: React.SFC<Props> = props => {
             />
           </Link>
         </Row>
-        <Row>
-          <span>
-            <Picto icon="eye" width={10} height={10} />
-            <SmallText>{` ${viewCount}`}</SmallText>
-          </span>
-          <SmallText>{formatLength(length)}</SmallText>
-        </Row>
+        {!light && (
+          <Row>
+            <span>
+              <Picto icon="eye" width={10} height={10} />
+              <SmallText>{` ${viewCount}`}</SmallText>
+            </span>
+            <SmallText>{formatLength(length)}</SmallText>
+          </Row>
+        )}
       </Column>
-      <Column align="center" >
+      <Column align={light ? "space-evenly" : "center"} >
+        {light && (
+          <Row>
+            <LinkAction 
+              onClick={handleClickAuthor}
+            >
+              <Author>{author}</Author>
+            </LinkAction>
+          </Row>
+        )}
         <Row>
           <LinkStyle to={`/video/${videoId}`} >
             <Title>{title}</Title>
           </LinkStyle>
         </Row>
-        <Row>
+        {!light &&(
+          <Row>
             <P>{description}</P>
-        </Row>
+          </Row>
+        )}
+        {light && (
+          <Row>
+            <span>
+              <Picto icon="eye" width={10} height={10} />
+              <SmallText>{` ${viewCount}`}</SmallText>
+            </span>
+            <SmallText>{formatLength(length)}</SmallText>
+          </Row>
+        )}
         <Row>
           <SmallText>{publishedText}</SmallText>
         </Row>
@@ -104,13 +130,13 @@ const apparition = keyframes`
   }
 `;
 
-const Container = styled.div<{delay: number}>`
+const Container = styled.div<{delay: number, light?: boolean}>`
   position: relative;
   opacity: 0;
   left: 400px;
   box-sizing: border-box; 
   width: 100%;
-  height: 180px;
+  height: ${({light}) => light ? '140px' : '180px'};
   padding: 3px;
   display: flex;
   justify-content: space-between;
