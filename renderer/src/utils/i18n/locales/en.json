@@ -21,6 +21,27 @@
       },
       "VideoInfos": {
         "views": "views"
+      },
+      "Filters": {
+        "sort_by": "sort by",
+        "date": "date",
+        "duration": "duration",
+        "type": "type",
+        "relevance": "relevance",
+        "rating": "rating",
+        "upload_date": "upload date",
+        "view_count": "number of views",
+        "hour": "this hour",
+        "today": "today",
+        "week": " this week",
+        "month": "this month",
+        "year": "this year",
+        "short": "shorts",
+        "long": "longs",
+        "video": "video",
+        "playlist": "playlist",
+        "reset": "reset filters",
+        "apply": "apply filters"
       }
     },
     "organisms":{}

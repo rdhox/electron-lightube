@@ -11,7 +11,8 @@ import {
   Channel,
   VideoDetails,
   Video,
-  IComments
+  IComments,
+  Filters
 } from './apiType';
 
 export interface ModalAlert {
@@ -40,6 +41,8 @@ interface State {
   showChannel: boolean;
   searchInChannel: boolean;
   backToSearch: boolean;
+  isFiltersOn: boolean;
+  filters: Filters;
 };
 
 const app: Model<State> = (update, get) => ({
@@ -58,6 +61,13 @@ const app: Model<State> = (update, get) => ({
     showChannel: false,
     searchInChannel: false,
     backToSearch: false,
+    isFiltersOn: false,
+    filters: {
+      sort_by: "",
+      date: '',
+      duration: '',
+      type: '',
+    },
   },
   reducers: {
     setCurrentSearch(currentSearch) {
@@ -138,6 +148,18 @@ const app: Model<State> = (update, get) => ({
         backToSearch
       }));
     },
+    setIsFiltersOn(isFiltersOn) {
+      update(state => ({
+        ...state,
+        isFiltersOn
+      }));
+    },
+    setFilters(filters) {
+      update(state => ({
+        ...state,
+        filters
+      }));
+    },
     resetSearch() {
       update(state => ({
         ...state,
@@ -156,6 +178,15 @@ const app: Model<State> = (update, get) => ({
       const setShowChannel = get().reducers.setShowChannel;
       const showChannel = get().state.showChannel;
       const videosToDisplay = get().state.videosToDisplay;
+      const {
+        sort_by,
+        date,
+        duration,
+        type
+      } = get().state.filters;
+
+
+
       if(showChannel) {
         setShowChannel(false);
       }
@@ -168,7 +199,9 @@ const app: Model<State> = (update, get) => ({
         }
       }
 
-      const result: VideoDetails[] = await getResultGlobalSearch(`?q=${query}&page=${page}`);
+      const params: string = `?q=${query}&page=${page}${sort_by !== '' ? `&sort_by=${sort_by}`: ''}${date !== '' ? `&date=${date}`: ''}${duration !== '' ? `&duration=${duration}` : ''}${type !== '' ? `&type=${type}`: ''}`;
+
+      const result: VideoDetails[] = await getResultGlobalSearch(params);
       if (result) {
         update(state => ({
           ...state,

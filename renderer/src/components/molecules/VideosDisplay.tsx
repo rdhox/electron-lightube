@@ -31,7 +31,6 @@ const VideosDisplay: React.SFC<Props> = props => {
         launchSearchOnChannel('', page + 1);
         setPage(p => p + 1);
       }
-
     }
   }
 
@@ -152,6 +151,8 @@ const VideosDisplay: React.SFC<Props> = props => {
               />
             );
           }
+
+          return null;
         })
       )}
       {list.length > 0 && loadingRef.current && <Spinner />}

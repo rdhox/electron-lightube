@@ -37,6 +37,7 @@ const Container = styled.button<{color: string; width: number; height:number}>`
   background-color: ${({color}) => color ? color: 'white'};
   cursor: pointer;
   outline: none;
+  margin: 2px;
 
   &:active {
     box-shadow: inset 0px 0px 2px 1px rgba(222,222,222,1);

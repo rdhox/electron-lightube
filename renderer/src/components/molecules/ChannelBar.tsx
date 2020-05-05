@@ -42,7 +42,6 @@ const ChannelBar: React.SFC<Props> = props => {
   const addChannelToTheme: ReducerEffect = apiThemes.getState().effects.addChannelToTheme;
   const removeChannelToTheme: ReducerEffect = apiThemes.getState().effects.removeChannelToTheme;
 
-  const selectedChannel: string = apiApp.getState().state.selectedChannel;
   const channelsRef: StateRef<ChannelsInThemes> = useRef(apiThemes.getState().state.channels);
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
   const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
@@ -130,6 +129,7 @@ const ChannelBar: React.SFC<Props> = props => {
       unsubChannelInfos();
       unsubChannelSubscribe();
       unsubLoading();
+      unsubBacktoSearch();
     }
   }, []);
 

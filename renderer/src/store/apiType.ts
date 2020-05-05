@@ -150,3 +150,16 @@ export interface IComments {
   comments: IComment[];
   continuation?: string;
 }
+
+// Filters
+export type SortBy = "relevance" | "rating" | "upload_date" | "view_count" | '';
+export type Date = "hour" | "today" | "week" | "month" | "year" | '';
+export type Duration = "short" | "long" | '';
+export type Type = "video" | "playlist"| '';
+
+export interface Filters {
+  sort_by: SortBy;
+  date: Date;
+  duration: Duration;
+  type: Type;
+}

@@ -37,7 +37,7 @@ const SearchModal: React.SFC<Props> = props => {
 }
 
 const Container = styled.div`
-  display:'flex';
+  display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;

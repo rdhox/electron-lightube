@@ -7,18 +7,24 @@ import { Channel } from '../../store/apiType';
 // import components
 import Input from '../atoms/Input';
 import ButtonIcon from '../atoms/ButtonIcon';
+import FiltersMenu from './FiltersMenu';
 
 interface Props {}
 
 const InputSearch: React.SFC<Props> = props => {
 
-  function handleKeyEnter(e){
+  function handleDisplayFilters(): void {
+    setIsFiltersOn(!dropFilters);
+    setDropFilters(b => !b);
+  }
+
+  function handleKeyEnter(e: React.KeyboardEvent){
     if(e.key === 'Enter'){
       startSearch();
     }
   }
 
-  function startSearch() {
+  function startSearch(): void {
     if(searchValue !== '') {
       if (selectedChannel !== '' && channelInfos.author !== '') {
         launchSearchOnChannel(searchValue);
@@ -31,44 +37,76 @@ const InputSearch: React.SFC<Props> = props => {
 
   const selectedChannel: string = useApp(appState => appState.state.selectedChannel);
   const channelInfos: Channel = useApp(appState => appState.state.channelInfos);
+
   const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
   const launchSearchOnChannel: ReducerEffect = apiApp.getState().effects.launchSearchOnChannel;
   const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
+  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
+
   const [searchValue, setSearchValue] = useState<string>("");
+  const [ dropFilters, setDropFilters ] = useState(false);
+
   const { t } = useTranslation();
+
+  let channelOn = false;
+  if(selectedChannel !== '' && typeof channelInfos?.author !== 'undefined')
+    channelOn = true;
 
   return (
     <Container
-      onKeyDown={handleKeyEnter}
-      channel={selectedChannel !== '' && channelInfos.author && true || false }
     >
-      {/* {selectedChannel !== '' && channelInfos.author && <WrapperChannel>{`${channelInfos.author}: `}</WrapperChannel>} */}
-      <WrapperChannel
-        display={selectedChannel !== '' && channelInfos.author && true || false}
+      <Row
+        onKeyDown={handleKeyEnter}
+        channel={channelOn}
       >
-        {`${channelInfos?.author || ''}`}
-      </WrapperChannel>
-      <Input
-        value={searchValue}
-        onHandleChange={setSearchValue}
-        placeholder={t('molecules.InputSearch.search')}
-        length='400px'
-      />
-      <ButtonIcon
-        halfround
-        handleClick={startSearch}
-        icon="search"
-        widthIcon={35}
-        heightIcon={35}
-        width={70}
-        height={50}
-        backgroundColor="#FAFAFA"
-      />
+        <WrapperChannel
+          channel={channelOn}
+        >
+          {channelInfos?.author || ''}
+        </WrapperChannel>
+        <Input
+          value={searchValue}
+          onHandleChange={setSearchValue}
+          placeholder={t('molecules.InputSearch.search')}
+          length='400px'
+        />
+        {!channelOn && (
+          <>
+            <Separator />
+            <ButtonIcon
+              handleClick={handleDisplayFilters}
+              icon="filter"
+              widthIcon={35}
+              heightIcon={35}
+              width={70}
+              height={50}
+              backgroundColor={dropFilters ? "#BBDEFB" : "#FAFAFA"}
+            />
+            <Separator />
+          </>
+        )}
+        <ButtonIcon
+          halfround
+          handleClick={startSearch}
+          icon="search"
+          widthIcon={35}
+          heightIcon={35}
+          width={70}
+          height={50}
+          backgroundColor="#FAFAFA"
+        />
+       </Row>
+       {dropFilters && <FiltersMenu />}
     </Container>
   );
 }
 
-const Container = styled.div<{channel?: boolean}>`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div<{channel?: boolean}>`
   height: 50px;
   border: solid 1px #9E9E9E;
   border-radius: 25px;
@@ -79,19 +117,25 @@ const Container = styled.div<{channel?: boolean}>`
   margin-right: 15px;
 `;
 
-const WrapperChannel = styled.span<{display: boolean}>`
-  color: ${({display}) => display ? 'black' :  '#FAFAFA'};
+const Separator = styled.div`
+  width: 1px;
+  height: 50px;
+  background-color: lightgray;
+`;
+
+const WrapperChannel = styled.span<{channel: boolean}>`
+  color: ${({channel}) => channel ? 'black' :  '#FAFAFA'};
   font-size: 15px;
   display: flex;
   align-items: center;
-  height: ${({display}) => display ? '50px' :  '0'};
-  width: ${({display}) => display ? '150px' :  '0'};
-  padding-left: ${({display}) => display ? '20px' :  '0'};
-  background-color: ${({display}) => display ? '#FAFAFA' :  'transparent'};
-  border-right: ${({display}) => display ? 'solid 1px lightgray' :  'none'};
-  border-top-left-radius: ${({display}) => display ? '25px' :  '0'};
-  border-bottom-left-radius: ${({display}) => display ? '25px' :  '0'};
-  margin-right: ${({display}) => display ? '10px' :  '0'};
+  height: ${({channel}) => channel ? '50px' :  '0'};
+  width: ${({channel}) => channel ? '150px' :  '0'};
+  padding-left: ${({channel}) => channel ? '20px' :  '0'};
+  background-color: ${({channel}) => channel ? '#FAFAFA' :  'transparent'};
+  border-right: ${({channel}) => channel ? 'solid 1px lightgray' :  'none'};
+  border-top-left-radius: ${({channel}) => channel ? '25px' :  '0'};
+  border-bottom-left-radius: ${({channel}) => channel ? '25px' :  '0'};
+  margin-right: ${({channel}) => channel ? '10px' :  '0'};
   transition: all 0.2s ease-in;
   transition-property: width, color;
 `;

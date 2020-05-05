@@ -32,7 +32,7 @@ const Header: React.SFC <Props> = () => {
         </Row>
         <InputSearch />
       </Row>
-      <Row align="space-between">
+      <Row align="space-between" style={{ paddingTop: "10px" }}>
         <ListChannels />
       </Row>
     </Container>
@@ -44,14 +44,14 @@ const Container = styled.header`
   width: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 6px 2px 0px rgba(240,240,240,1);
+  box-shadow: 0px 2px 2px 0px rgba(240,240,240,1);
+  padding-top: 10px;
 `;
 const Row = styled.div<{align: string}>`
   width: 100%;
   display: flex;
   justify-content: ${({align}) => align};
-  align-items: flex-start;
-  padding-top: 10px;
+  align-items: center;
 `;
 
  

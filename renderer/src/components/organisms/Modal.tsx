@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+
+import { apiApp } from '../../store';
 
 interface Props {
   children: React.ReactNode;
@@ -15,21 +17,46 @@ const Modal: React.SFC<Props> = props => {
     header
   } = props;
 
+  const isFiltersOn: boolean = apiApp.getState().state.isFiltersOn;
+  const [ filters, setFilters ] = useState(isFiltersOn);
+
+  useEffect(() => {
+
+    const unsubFilter = apiApp.subscribe(
+      (isFiltersOn: boolean) => setFilters(isFiltersOn),
+      appState => appState.state.isFiltersOn
+    );
+
+    return () => {
+      unsubFilter();
+    }
+  }, []);
+
+  console.log(filters);
+
   return ReactDOM.createPortal(
-    <Container header={header} >{children}</Container>
+    <Container filtersOn={filters} header={header} >{children}</Container>
   , document.getElementById('root'));
 }
 
-const Container = styled.div<{header?: boolean}>`
+const Container = styled.div<{header?: boolean, filtersOn?: boolean}>`
   position: absolute;
   left: 0;
   right: 0;
-  top: ${({header}) => header ? '170px': '0px'};
+  top: ${({header, filtersOn}) => {
+    if(header) {
+      if(filtersOn)
+        return '370px';
+      return '170px';
+    }
+    return 'Opx';
+  }};
   bottom: 0;
   background-color: rgba(44,62,80 ,0.2);
   display: flex;
   z-index: 999;
   overflow-x: hidden;
+  transition: top 0.2s ease-out;
 `;
 
 export default Modal;

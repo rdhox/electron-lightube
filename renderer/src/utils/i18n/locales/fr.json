@@ -21,6 +21,27 @@
       },
       "VideoInfos": {
         "views": "vues"
+      },
+      "Filters": {
+        "sort_by": "trier par",
+        "date": "date d'ajout",
+        "duration": "durée",
+        "type": "type",
+        "relevance": "pertinence",
+        "rating": "avis",
+        "upload_date": "date de mise en ligne",
+        "view_count": "nombre de vues",
+        "hour": "dernière heure",
+        "today": "aujourd'hui",
+        "week": " cette semaine",
+        "month": " ce mois",
+        "year": " cette année",
+        "short": "courtes",
+        "long": "longues",
+        "video": "video",
+        "playlist": "playlist",
+        "reset": "réinitialiser les filtres",
+        "apply": "appliquer les filtres"
       }
     },
     "organisms":{}

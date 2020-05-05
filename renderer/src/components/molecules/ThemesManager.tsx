@@ -7,7 +7,6 @@ import { Themes } from '../../store/modelThemes';
 // import components
 import Select from '../atoms/Select';
 import InputTheme from './InputTheme';
-import SmallTitle from '../atoms/SmallTitle';
 import ButtonIcon from '../atoms/ButtonIcon';
 import ButtonText from '../atoms/ButtonText';
 
