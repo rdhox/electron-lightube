@@ -25,19 +25,19 @@ const Select: React.SFC<Props> = props => {
   } = props;
 
   return (
-    <Container value={defaultValue} onChange={handleChange}>
+    <Container value={defaultValue} onChange={handleChange} >
       {Object.keys(options).map(key => <option key={key} value={key}>{options[key]}</option>)}
     </Container>
   );
 }
 
 const Container = styled.select`
-  width: 200px;
+  width: 180px;
   height: 30px;
   font-size: 20px;
   border: none;
   outline: none;
-  background-color: transparent;
+  background-color: #F5F5F5;
 `;
 
 export default Select;

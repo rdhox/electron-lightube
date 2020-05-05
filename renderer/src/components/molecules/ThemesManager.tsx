@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import { useThemes, useApp, apiApp, apiThemes, ReducerEffect } from '../../store';
+import { useApp, apiApp, apiThemes, ReducerEffect, StateRef } from '../../store';
 import { Themes } from '../../store/modelThemes';
 // import components
 import Select from '../atoms/Select';
@@ -43,7 +43,9 @@ const ThemesManager: React.SFC<Props> = props => {
   }
 
   const { t } = useTranslation();
-  const themes: Themes = useThemes(themesState => themesState.state.themes);
+
+  const themesRef: StateRef<Themes> = useRef(apiThemes.getState().state.themes);
+
   const deleteTheme: ReducerEffect = apiThemes.getState().effects.deleteTheme;
   const selectedTheme: string = useApp(appState => appState.state.selectedTheme);
   const setSelectedTheme: ReducerEffect = apiApp.getState().reducers.setSelectedTheme;
@@ -51,75 +53,77 @@ const ThemesManager: React.SFC<Props> = props => {
   const setDisplayModalAlert: ReducerEffect = apiApp.getState().reducers.setDisplayModalAlert;
 
   useEffect(() => {
-    const opt = Object.keys(themes).reduce((acc, e) => {
-      const { id, name } = themes[e];
-      acc[id] = name;
-      return acc;
-    }, {});
-    setOptions(opt);
-    setEdit(false);
-  }, [themes]);
+
+    function updateOptions(themes) {
+      const opt = Object.keys(themes).reduce((acc, e) => {
+        const { id, name } = themes[e];
+        acc[id] = name;
+        return acc;
+      }, {});
+      setOptions(opt);
+      setEdit(false);
+    }
+
+    const unsubThemes = apiThemes.subscribe(
+      (themes: Themes) => {
+        updateOptions(themes);
+        themesRef.current = themes;
+      },
+      themesState => themesState.state.themes
+    );
+
+    updateOptions(themesRef.current);
+
+    return () => {
+      unsubThemes();
+    }
+
+  }, []);
 
   const [ edit, setEdit ] = useState<boolean>(false);
   const [ options, setOptions ] = useState<any>({});
 
   return (
     <Container>
-      <Row>
-        <SmallTitle>{t('molecules.ThemesManager.title')}</SmallTitle>
-        {selectedTheme !== "0" && (
-          <ButtonText
-            onHandleClick={handleDeleteTheme}
-            height={20}
-          >
-            {t('molecules.ThemesManager.delete')}
-          </ButtonText>
-        )}
-      </Row>
-      <Row>
-        {
-          !edit ? 
-            <Select
-              options={options}
-              defaultValue={selectedTheme}
-              onHandleChange={onHandleSelectTheme}
-            />
-          :
-            <InputTheme />
-        }
-        <WrapperButton edit={edit}>
-          <ButtonIcon
-            icon={'add'}
-            handleClick={switchEdit}
-            widthIcon={35}
-            heightIcon={35}
-            width={35}
-            height={40}
+      {
+        !edit ? 
+          <Select
+            options={options}
+            defaultValue={selectedTheme}
+            onHandleChange={onHandleSelectTheme}
           />
-        </WrapperButton>
-      </Row>
+        :
+          <InputTheme />
+      }
+      <WrapperButton edit={edit}>
+        <ButtonIcon
+          icon={'add'}
+          handleClick={switchEdit}
+          widthIcon={35}
+          heightIcon={35}
+          width={35}
+          height={40}
+        />
+      </WrapperButton>
+      {selectedTheme !== "0" && (
+        <ButtonText
+          onHandleClick={handleDeleteTheme}
+          height={20}
+        >
+          {t('molecules.ThemesManager.delete')}
+        </ButtonText>
+      )}
     </Container>
   );
 }
 
 const Container = styled.div`
-  width: 240px;
-  height: 60px;
+  width: 350px;
   padding: 5px;
   margin: 0 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #F5F5F5;
-  border-right: solid 1px lightgrey;
-  border-bottom: solid 1px lightgrey;
-  border-radius: 0 10px 10px 10px;
-`;
-
-const Row = styled.div`
-  display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const WrapperButton = styled.div<{edit: boolean}>`

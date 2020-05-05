@@ -47,6 +47,7 @@ const ChannelBar: React.SFC<Props> = props => {
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
   const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
   const loadingRef: StateRef<boolean> = useRef(apiApp.getState().state.loading);
+  const backToSearchRef: StateRef<boolean> = useRef(apiApp.getState().state.backToSearch);
 
   const [ display, setDisplay ] = useState<boolean>(showChannelRef.current);
   const [ loading, setLoading ] = useState<boolean>(loadingRef.current);
@@ -110,13 +111,18 @@ const ChannelBar: React.SFC<Props> = props => {
       },
       themesState => themesState.state.channels
     );
-
     const unsubLoading = apiApp.subscribe(
       (loading: boolean) => {
         loadingRef.current = loading;
         setLoading(loading);
       },
       appState => appState.state.loading
+    );
+    const unsubBacktoSearch = apiApp.subscribe(
+      (backToSearch: boolean) => {
+        backToSearchRef.current = backToSearch;
+      },
+      appState => appState.state.backToSearch
     );
 
     return () => {
@@ -131,7 +137,7 @@ const ChannelBar: React.SFC<Props> = props => {
 
     return (
       <Container>
-        {selectedChannel === '' && (
+        {backToSearchRef.current && (
           <ButtonIcon
             icon="arrowBack"
             widthIcon={20}

@@ -22,10 +22,10 @@ const ChannelBox: React.SFC<Props> = props => {
 
   return (
     <Container>
-      <Column width={70}>
+      <Column width={70} align="center">
         {image !== '' ?  <Avatar src={image} /> : 
           <PlaceHolderImage>
-            <Picto icon="noimage" width={60} height={60} color="#BDBDBD" />
+            <Picto icon="noimage" width={50} height={50} color="#BDBDBD" />
           </PlaceHolderImage>
         }
       </Column>
@@ -59,7 +59,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 300px;
-  height: 70px;
+  height: 60px;
 `;
 
 const Placeholder = styled.div<{width: number, height: number, color: string}>`
@@ -71,9 +71,9 @@ const Placeholder = styled.div<{width: number, height: number, color: string}>`
 `;
 
 const PlaceHolderImage = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 35px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
   border: solid 1px #757575;
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@ const Row = styled.div`
 
 const Column = styled.div<{width?: number, align?: string}>`
   width: ${({width}) => width ? `${width}px` : '100%'};
-  height: 70px;
+  height: 60px;
   display: flex;
   flex-direction: column;
   justify-content: ${({align}) => align ? align: 'space-between' };
@@ -120,9 +120,9 @@ const P = styled.p`
 `;
 
 const Avatar = styled.img`
-  width: 70px;
-  height: 70px;
-  border-radius: 35px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
 `;
 
 export default ChannelBox;

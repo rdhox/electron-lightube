@@ -3,6 +3,7 @@ import {
   getResultGlobalSearch,
   getInfosFromChannel,
   getVideosFromChannel,
+  getResultFromChannel,
   getVideo,
   getComments
 } from '../services/apiService';
@@ -25,7 +26,6 @@ export interface ModalAlert {
 }
 
 interface State {
-  locale: string;
   loading: boolean;
   currentSearch: string;
   selectedTheme: string;
@@ -38,11 +38,12 @@ interface State {
   displayModalAlert: ModalAlert;
   isSearchModalDisplayed: boolean;
   showChannel: boolean;
+  searchInChannel: boolean;
+  backToSearch: boolean;
 };
 
 const app: Model<State> = (update, get) => ({
   state: {
-    locale: 'en',
     loading: false,
     currentSearch:'',
     selectedTheme: "0",
@@ -55,14 +56,10 @@ const app: Model<State> = (update, get) => ({
     displayModalAlert: {},
     isSearchModalDisplayed: false,
     showChannel: false,
+    searchInChannel: false,
+    backToSearch: false,
   },
   reducers: {
-    setLocale(locale) {
-      update(state => ({
-        ...state,
-        locale
-      }));
-    },
     setCurrentSearch(currentSearch) {
       update(state => ({
         ...state,
@@ -129,6 +126,18 @@ const app: Model<State> = (update, get) => ({
         showChannel
       }));
     },
+    setSearchInChannel(searchInChannel) {
+      update(state => ({
+        ...state,
+        searchInChannel
+      }));
+    },
+    setBackToSearch(backToSearch) {
+      update(state => ({
+        ...state,
+        backToSearch
+      }));
+    },
     resetSearch() {
       update(state => ({
         ...state,
@@ -137,6 +146,8 @@ const app: Model<State> = (update, get) => ({
         channelInfos: {},
         isSearchModalDisplayed: false,
         selectedChannel: '',
+        searchInChannel: false,
+        backToSearch: false,
       }));
     }
   },
@@ -186,6 +197,8 @@ const app: Model<State> = (update, get) => ({
 
         update(state => ({
           ...state,
+          selectedChannel: authorId,
+          backToSearch: true,
           channelInfos: {
             author,
             authorId,
@@ -198,7 +211,7 @@ const app: Model<State> = (update, get) => ({
       }
     },
     fetchChannelVideo: async function(
-      authorId: string= '',
+      authorId: string = '',
       page: number = 1,
       image: string = '',
       author: string = '',
@@ -227,7 +240,6 @@ const app: Model<State> = (update, get) => ({
             },
           }));
         } else if (page > 1) {
-          console.log(result);
           update(state => ({
             ...state,
             channelInfos: {
@@ -239,6 +251,38 @@ const app: Model<State> = (update, get) => ({
             },
           }));
         }
+      }
+    },
+    launchSearchOnChannel: async function(query: string = '', page: number = 1){
+      const selectedChannel = get().state.selectedChannel;
+      const currentSearch = get().state.currentSearch;
+      
+      if(page < 2) {
+        update(state => ({
+          ...state,
+          channelInfos: {
+            ...state.channelInfos,
+            latestVideos: []
+          },
+        }));
+      }
+
+      const queryString: string = query !== '' ? query : currentSearch;
+
+      const result: VideoDetails[] = await getResultFromChannel(`${selectedChannel}?q=${queryString}&page=${page}`);
+      if (result) {
+        update(state => ({
+          ...state,
+          currentSearch: queryString,
+          searchInChannel: true,
+          channelInfos: {
+            ...state.channelInfos,
+            latestVideos: [
+              ...state.channelInfos.latestVideos,
+              ...result
+            ],
+          },
+        }));
       }
     },
     fetchVideo: async function(idVideo: string) {

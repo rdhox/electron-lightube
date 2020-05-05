@@ -1,14 +1,27 @@
 import { Model } from './index';
 
-interface State {
-  hello: string;
+export interface SettingsState {
+  locale: string;
 }
 
-const settings: Model<State> = (update, get) => ({
+const settings: Model<SettingsState> = (update, get) => ({
   state: {
-    hello: "World",
+    locale: 'en',
   },
-  reducers: {},
+  reducers: {
+    initialize(initialState) {
+      const copyInitialState = JSON.parse(JSON.stringify(initialState));
+      update(state => ({
+        ...copyInitialState
+      }));
+    },
+    setLocale(locale) {
+      update(state => ({
+        ...state,
+        locale
+      }));
+    },
+  },
   effects: {}
 });
 

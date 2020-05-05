@@ -17,8 +17,8 @@ const Header: React.SFC <Props> = () => {
 
   return (
     <Container>
-      <Row align="center" >
-        <AlignLeft>
+      <Row align="space-between" >
+        <Row align="flex-start">
           <ButtonIcon
             icon="gear"
             handleClick={clickSettings}
@@ -28,23 +28,12 @@ const Header: React.SFC <Props> = () => {
             widthIcon={40}
             heightIcon={40}
           />
-        </AlignLeft>
+          <ThemesManager />
+        </Row>
         <InputSearch />
       </Row>
       <Row align="space-between">
-        <ThemesManager />
         <ListChannels />
-        <div style={{ alignSelf: "flex-end"}} >
-          <ButtonIcon
-              icon="arrowDown"
-              handleClick={() => {}}
-              backgroundColor="transparent"
-              width={50}
-              height={50}
-              widthIcon={40}
-              heightIcon={40}
-            />
-        </div>
       </Row>
     </Container>
   );
@@ -61,13 +50,8 @@ const Row = styled.div<{align: string}>`
   width: 100%;
   display: flex;
   justify-content: ${({align}) => align};
-  align-items: center;
-  padding: 5px;
-`;
-const AlignLeft = styled.div`
-  position: absolute;
-  top: 2.5px;
-  left: 0px;
+  align-items: flex-start;
+  padding-top: 10px;
 `;
 
  

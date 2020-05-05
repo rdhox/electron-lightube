@@ -23,10 +23,15 @@ const VideosDisplay: React.SFC<Props> = props => {
         launchSearch(currentSearchRef.current, page + 1);
         setPage(p => p + 1);
       }
-      if(!loadingRef.current && selectedChannelRef.current !== '') {
+      if(!loadingRef.current && selectedChannelRef.current !== '' && !searchInChannelRef.current ) {
         fetchChannelVideo(selectedChannelRef.current, page + 1);
         setPage(p => p + 1);
       }
+      if(!loadingRef.current && selectedChannelRef.current !== '' && searchInChannelRef.current ) {
+        launchSearchOnChannel('', page + 1);
+        setPage(p => p + 1);
+      }
+
     }
   }
 
@@ -37,11 +42,13 @@ const VideosDisplay: React.SFC<Props> = props => {
   const videosToDisplayRef: StateRef<VideoDetails[]> = useRef(apiApp.getState().state.videosToDisplay);
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
   const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
+  const searchInChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.searchInChannel);
   const currentSearchRef: StateRef<string> = useRef(apiApp.getState().state.currentSearch);
   const selectedChannelRef: StateRef<string> = useRef(apiApp.getState().state.selectedChannel);
   const loadingRef: StateRef<boolean> = useRef(apiApp.getState().state.loading);
 
   const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
+  const launchSearchOnChannel: ReducerEffect = apiApp.getState().effects.launchSearchOnChannel;
   const fetchChannelVideo: ReducerEffect = apiApp.getState().effects.fetchChannelVideo;
 
   function updateList(showChannel) {
@@ -88,6 +95,10 @@ const VideosDisplay: React.SFC<Props> = props => {
       (loading: boolean) => loadingRef.current = loading,
       appState => appState.state.loading
     );
+    const unsubSearchInChannel = apiApp.subscribe(
+      (searchInChannel: boolean) => searchInChannelRef.current = searchInChannel,
+      appState => appState.state.searchInChannel
+    );
 
     return () => {
       unsubShowChannel();
@@ -96,6 +107,7 @@ const VideosDisplay: React.SFC<Props> = props => {
       unsubCurrentSearch();
       unsubSelectedChannel();
       unsubLoading();
+      unsubSearchInChannel();
     }
   }, []);
 
@@ -109,6 +121,7 @@ const VideosDisplay: React.SFC<Props> = props => {
       ):(
         list.map((video, i) => {
           const {
+            type,
             videoId,
             title,
             author,
@@ -121,22 +134,24 @@ const VideosDisplay: React.SFC<Props> = props => {
             description
           } = video;
 
-          return (
-            <VideoBox
-              key={`${i}-${published}`}
-              videoId={videoId}
-              title={title}
-              author={author}
-              authorId={authorId}
-              thumbnail={videoThumbnails[4].url}
-              viewCount={viewCount}
-              publishedText={publishedText}
-              length={lengthSeconds}
-              description={description}
-              index={i}
-              onChannel={showChannelRef.current}
-            />
-          );
+          if (type === 'video') {
+            return (
+              <VideoBox
+                key={`${i}-${published}`}
+                videoId={videoId}
+                title={title}
+                author={author}
+                authorId={authorId}
+                thumbnail={videoThumbnails[4].url}
+                viewCount={viewCount}
+                publishedText={publishedText}
+                length={lengthSeconds}
+                description={description}
+                index={i}
+                onChannel={showChannelRef.current}
+              />
+            );
+          }
         })
       )}
       {list.length > 0 && loadingRef.current && <Spinner />}

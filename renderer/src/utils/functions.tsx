@@ -1,4 +1,4 @@
-import { apiApp } from '../store';
+import { apiSettings } from '../store';
 
 export function formatLength(timestamp: number):string{
   const hours = Math.floor(timestamp / 60 / 60);
@@ -11,7 +11,7 @@ export function formatLength(timestamp: number):string{
 }
 
 export function getFormatDate(timestamp: number): string {
-  const locale = apiApp.getState().state.locale;
+  const locale = apiSettings.getState().state.locale;
   const date = new Date(timestamp*1000);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString(locale, options);

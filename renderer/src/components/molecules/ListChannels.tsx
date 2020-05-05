@@ -78,7 +78,7 @@ const Container = styled.div`
 `;
 
 const WrapperChannel = styled.div`
-  margin: 0 20px;
+  margin: 0;
   cursor: pointer;
 `;
 

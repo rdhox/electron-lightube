@@ -33,7 +33,7 @@ const VideoPage: React.SFC<Props> = props => {
       resetSearch();
       fetchVideo(video);
     }
-  }, [resetSearch, fetchVideo, setSelectedVideo, idVideo, video]);
+  }, [resetSearch, fetchVideo, setSelectedVideo, setCommentsCollection, idVideo, video]);
 
   let image = '';
 
