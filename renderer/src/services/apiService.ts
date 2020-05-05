@@ -9,3 +9,4 @@ export const getVideosFromChannel = data => api.getVideosFromChannel(data);
 export const getResultFromChannel = data => api.getResultFromChannel(data);
 export const getVideo = data => api.getVideo(data);
 export const getComments = data => api.getComments(data);
+export const getPlaylist = data => api.getPlaylist(data);

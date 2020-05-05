@@ -5,14 +5,16 @@ import {
   getVideosFromChannel,
   getResultFromChannel,
   getVideo,
-  getComments
+  getComments,
+  getPlaylist
 } from '../services/apiService';
 import {
   Channel,
   VideoDetails,
   Video,
   IComments,
-  Filters
+  Filters,
+  Playlist
 } from './apiType';
 
 export interface ModalAlert {
@@ -32,7 +34,7 @@ interface State {
   selectedTheme: string;
   selectedChannel: string;
   selectedVideo: Video;
-  videosToDisplay: VideoDetails[];
+  videosToDisplay: Array<VideoDetails | Playlist>;
   channelInfos: Channel;
   commentsCollection: IComments;
   isDeleteThemeDisplayed: boolean;
@@ -43,6 +45,7 @@ interface State {
   backToSearch: boolean;
   isFiltersOn: boolean;
   filters: Filters;
+  playlistSelected: Playlist;
 };
 
 const app: Model<State> = (update, get) => ({
@@ -68,6 +71,7 @@ const app: Model<State> = (update, get) => ({
       duration: '',
       type: '',
     },
+    playlistSelected: {} as Playlist
   },
   reducers: {
     setCurrentSearch(currentSearch) {
@@ -158,6 +162,12 @@ const app: Model<State> = (update, get) => ({
       update(state => ({
         ...state,
         filters
+      }));
+    },
+    setPlaylistSelected(playlistSelected) {
+      update(state => ({
+        ...state,
+        playlistSelected
       }));
     },
     resetSearch() {
@@ -333,6 +343,15 @@ const app: Model<State> = (update, get) => ({
         update(state => ({
           ...state,
           commentsCollection: result
+        }))
+      }
+    },
+    fetchPlaylist: async function(idPlaylist: string) {
+      const result: Playlist = await getPlaylist(idPlaylist);
+      if (result) {
+        update(state => ({
+          ...state,
+          playlistSelected: result
         }))
       }
     }

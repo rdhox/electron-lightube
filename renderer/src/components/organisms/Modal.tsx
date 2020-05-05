@@ -32,8 +32,6 @@ const Modal: React.SFC<Props> = props => {
     }
   }, []);
 
-  console.log(filters);
-
   return ReactDOM.createPortal(
     <Container filtersOn={filters} header={header} >{children}</Container>
   , document.getElementById('root'));

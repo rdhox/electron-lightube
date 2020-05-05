@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useApp, apiApp } from '../../store';
 // import components
 import Suggestions from '../molecules/Suggestions';
+import PlaylistVideos from '../molecules/PlaylistVideos';
 import Player from '../molecules/Player';
 import VideoInfos from '../molecules/VideoInfos';
 import Comments from '../molecules/Comments';
@@ -20,8 +21,10 @@ const VideoPage: React.SFC<Props> = props => {
   const fetchVideo = apiApp.getState().effects.fetchVideo;
   const setSelectedVideo = apiApp.getState().reducers.setSelectedVideo;
   const setCommentsCollection = apiApp.getState().reducers.setCommentsCollection;
+  const setPlaylistSelected = apiApp.getState().reducers.setPlaylistSelected;
 
   const selectedVideo = useApp(appState => appState.state.selectedVideo);
+  const playlistSelected = useApp(appState => appState.state.playlistSelected);
   const loading = useApp(appState => appState.state.loading);
 
   useEffect(() => {
@@ -34,6 +37,15 @@ const VideoPage: React.SFC<Props> = props => {
       fetchVideo(video);
     }
   }, [resetSearch, fetchVideo, setSelectedVideo, setCommentsCollection, idVideo, video]);
+
+  // If click on video not on playlist list, we erase the playlist
+  useEffect(() => {
+    if(Object.keys(playlistSelected).length > 0) {
+      if(!Object.keys(playlistSelected.videos).some(i => playlistSelected.videos[i].videoId === idVideo)){
+        setPlaylistSelected({});
+      }
+    }
+  }, [idVideo, playlistSelected, setPlaylistSelected]);
 
   let image = '';
 
@@ -59,10 +71,17 @@ const VideoPage: React.SFC<Props> = props => {
           <Comments video={idVideo} />
       </Column>
       <Column width={30}>
-        <Suggestions
-          videos={selectedVideo.recommendedVideos}
-          loading={loading}
-        />
+        {Object.keys(playlistSelected).length > 0 ? (
+          <PlaylistVideos
+            videos={playlistSelected.videos}
+            loading={loading}
+          />
+        ): (
+          <Suggestions
+            videos={selectedVideo.recommendedVideos}
+            loading={loading}
+          />
+        )}
       </Column>
     </Container>
   );

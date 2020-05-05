@@ -151,6 +151,31 @@ export interface IComments {
   continuation?: string;
 }
 
+export interface VideoPlaylist {
+  title: string;
+  videoId: string;
+  author: string;
+  authorId: string;
+  authorUrl: string;
+  videoThumbnails: Thumbnail[];
+  index: number;
+  lengthSeconds: number;
+}
+
+export interface Playlist {
+  title: string;
+  playlistId: string;
+  author: string;
+  authorId: string;
+  authorThumbnails: AuthorThumbnail[];
+  description: string;
+  descriptionHtml: string;
+  videoCount: number;
+  viewCount: number;
+  updated: number;
+  videos: VideoPlaylist[];
+}
+
 // Filters
 export type SortBy = "relevance" | "rating" | "upload_date" | "view_count" | '';
 export type Date = "hour" | "today" | "week" | "month" | "year" | '';

@@ -13,6 +13,7 @@ import { ReactComponent as SubscribeIcon } from '../../assets/icons/subscribe.sv
 import { ReactComponent as UnsubscribeIcon } from '../../assets/icons/unsubscribe.svg';
 import { ReactComponent as NoImageIcon } from '../../assets/icons/noimage.svg';
 import { ReactComponent as FilterIcon } from '../../assets/icons/filter.svg';
+import { ReactComponent as VideoIcon } from '../../assets/icons/video.svg';
 
 type SizeType = number | string;
 
@@ -42,7 +43,8 @@ const svgs: SvgsType = {
   subscribe: SubscribeIcon,
   unsubscribe: UnsubscribeIcon,
   noimage: NoImageIcon,
-  filter: FilterIcon
+  filter: FilterIcon,
+  video: VideoIcon
 };
 
 const Picto: React.SFC <Props> = props => {

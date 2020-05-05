@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-import { Channel, VideoDetails } from '../../store/apiType';
+import { Channel, VideoDetails, Playlist } from '../../store/apiType';
 import { apiApp, ReducerEffect, StateRef } from '../../store';
 // import components
 import VideoBox from './VideoBox';
+import PlaylistBox from './PlaylistBox';
 import Spinner from '../atoms/Spinner';
 
 interface Props {};
@@ -35,10 +36,10 @@ const VideosDisplay: React.SFC<Props> = props => {
   }
 
   const refContainer = useRef(null);
-  const [ list, setList] = useState<VideoDetails[]>([]);
+  const [ list, setList] = useState<any[]>([]);
   const [ page, setPage ] = useState<number>(1);
 
-  const videosToDisplayRef: StateRef<VideoDetails[]> = useRef(apiApp.getState().state.videosToDisplay);
+  const videosToDisplayRef: StateRef<Array<VideoDetails | Playlist>> = useRef(apiApp.getState().state.videosToDisplay);
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
   const showChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.showChannel);
   const searchInChannelRef: StateRef<boolean> = useRef(apiApp.getState().state.searchInChannel);
@@ -121,19 +122,22 @@ const VideosDisplay: React.SFC<Props> = props => {
         list.map((video, i) => {
           const {
             type,
-            videoId,
-            title,
-            author,
-            authorId,
-            videoThumbnails,
-            viewCount,
-            published,
-            publishedText,
-            lengthSeconds,
-            description
           } = video;
 
           if (type === 'video') {
+            const {
+              videoId,
+              title,
+              author,
+              authorId,
+              videoThumbnails,
+              viewCount,
+              published,
+              publishedText,
+              lengthSeconds,
+              description
+            } = video;
+
             return (
               <VideoBox
                 key={`${i}-${published}`}
@@ -148,6 +152,32 @@ const VideosDisplay: React.SFC<Props> = props => {
                 description={description}
                 index={i}
                 onChannel={showChannelRef.current}
+              />
+            );
+          }
+
+          if(type === 'playlist') {
+            const {
+              title,
+              playlistId,
+              playlistThumbnail,
+              author,
+              authorId,
+              videoCount,
+              videos,
+            } = video;
+            return (
+              <PlaylistBox
+                key={`${i}-${playlistId}`}
+                title={title}
+                author={author}
+                authorId={authorId}
+                playlistId={playlistId}
+                playlistThumbnail={playlistThumbnail}
+                videoCount={videoCount}
+                index={i}
+                onChannel={showChannelRef.current}
+                videos={videos}
               />
             );
           }

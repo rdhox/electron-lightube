@@ -1,59 +1,61 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { apiApp, ReducerEffect } from '../../store';
-import {formatLength} from '../../utils/functions';
+import { VideoPlaylist } from '../../store/apiType';
 // import components
 import Picto from '../atoms/Picto';
 import Thumbnail from '../atoms/Thumbnail';
 
 interface Props {
-  videoId: string;
   title: string;
   author: string;
   authorId: string;
-  thumbnail: string;
-  viewCount?: number | string;
-  publishedText?: string;
-  length: number;
-  description?: string;
+  playlistId: string;
+  playlistThumbnail: string;
+  videoCount: number;
   index?: number;
   onChannel: boolean;
   light?: boolean;
-  selected?: boolean
+  videos: VideoPlaylist;
 };
 
-const VideoBox: React.SFC<Props> = props => {
+const PlaylistBox: React.SFC<Props> = props => {
 
   function handleClickAuthor(): void {
-    setIsSearchModalDisplayed(true);
     fetchChannelInfos(authorId);
   }
 
-  const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
+  function handleClickPlaylist() {
+    fetchPlaylist(playlistId);
+    history.push(`/video/${videos[0].videoId}`);
+  }
+
   const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
+  const fetchPlaylist: ReducerEffect = apiApp.getState().effects.fetchPlaylist;
+
+  const history = useHistory();
 
   const {
-    videoId,
     title,
+    playlistId,
+    playlistThumbnail,
     author,
     authorId,
-    thumbnail,
-    viewCount = null,
-    publishedText,
-    length,
-    description,
+    videoCount,
     index,
-    onChannel,
     light = false,
-    selected = false
+    onChannel,
+    videos
   } = props;
 
   const delay = (index % 20) / 8;
 
+  console.log(author);
+
   return (
-    <Container delay={delay} light={light} selected={selected}>
+    <Container delay={delay} light={light}>
       <Column width={210} align={light ? "center" : "space-between"}>
         {!light && (
           <Row height={onChannel ? 10 : 'auto'}>
@@ -67,24 +69,22 @@ const VideoBox: React.SFC<Props> = props => {
           </Row>
         )}
         <Row>
-          <Link to={`/video/${videoId}`} >
+          <LinkAction onClick={handleClickPlaylist} >
             <Thumbnail 
-              url={thumbnail}
+              url={playlistThumbnail}
               width={200}
               height='auto'
               borderRadius={5}
             />
-          </Link>
+          </LinkAction>
         </Row>
         {!light && (
           <Row>
-            {viewCount && (
-              <span>
-                <Picto icon="eye" width={10} height={10} />
-                <SmallText>{` ${viewCount}`}</SmallText>
-              </span>
-            )}
-            <SmallText>{formatLength(length)}</SmallText>
+            <span>
+              <Picto icon="video" width={10} height={10} />
+              <SmallText>{` ${videoCount}`}</SmallText>
+            </span>
+            <SmallText>Playlist</SmallText>
           </Row>
         )}
       </Column>
@@ -99,29 +99,23 @@ const VideoBox: React.SFC<Props> = props => {
           </Row>
         )}
         <Row>
-          <LinkStyle to={`/video/${videoId}`} >
+          <LinkAction onClick={handleClickPlaylist} >
             <Title>{title}</Title>
-          </LinkStyle>
+          </LinkAction>
         </Row>
-        {!light &&(
+        {light &&(
           <Row>
-            <P>{description}</P>
+            <P>Playlist</P>
           </Row>
         )}
         {light && (
           <Row>
-            {viewCount && (
             <span>
-              <Picto icon="eye" width={10} height={10} />
-              <SmallText>{` ${viewCount}`}</SmallText>
+              <Picto icon="video" width={10} height={10} />
+              <SmallText>{` ${videoCount}`}</SmallText>
             </span>
-            )}
-            <SmallText>{formatLength(length)}</SmallText>
           </Row>
         )}
-        <Row>
-          <SmallText>{publishedText}</SmallText>
-        </Row>
       </Column>
     </Container>
   );
@@ -138,7 +132,7 @@ const apparition = keyframes`
   }
 `;
 
-const Container = styled.div<{delay: number, light?: boolean, selected?: boolean}>`
+const Container = styled.div<{delay: number, light?: boolean}>`
   position: relative;
   opacity: 0;
   left: 400px;
@@ -155,15 +149,6 @@ const Container = styled.div<{delay: number, light?: boolean, selected?: boolean
   animation-delay: ${({delay}) => `${delay}s`};
   animation-fill-mode: forwards;
   border-bottom: solid 1px #F5F5F5;
-  background-color: ${({selected}) => selected ? '#BBDEFB' : 'transparent'};
-`;
-
-const LinkStyle = styled(Link)`
-  color: black;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const LinkAction = styled.span`
@@ -230,6 +215,4 @@ const P = styled.p`
   overflow: hidden;
 `;
 
-const MemoizedVideoBox = React.memo(VideoBox);
-
-export default MemoizedVideoBox;
+export default PlaylistBox;
