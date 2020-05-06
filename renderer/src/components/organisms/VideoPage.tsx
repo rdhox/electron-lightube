@@ -22,6 +22,7 @@ const VideoPage: React.SFC<Props> = props => {
   const setSelectedVideo: ReducerEffect = apiApp.getState().reducers.setSelectedVideo;
   const setCommentsCollection: ReducerEffect = apiApp.getState().reducers.setCommentsCollection;
   const setPlaylistSelected: ReducerEffect = apiApp.getState().reducers.setPlaylistSelected;
+  const setIsWatchLaterModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
 
   const selectedVideo: Video = useApp(appState => appState.state.selectedVideo);
   const playlistSelected: Playlist = useApp(appState => appState.state.playlistSelected);
@@ -34,6 +35,7 @@ const VideoPage: React.SFC<Props> = props => {
       setVideo(idVideo);
     } else if (idVideo === video){
       resetSearch();
+      setIsWatchLaterModalDisplayed(false)
       fetchVideo(video);
     }
   }, [resetSearch, fetchVideo, setSelectedVideo, setCommentsCollection, idVideo, video]);

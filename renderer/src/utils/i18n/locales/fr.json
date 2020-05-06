@@ -22,6 +22,10 @@
       "VideoInfos": {
         "views": "vues"
       },
+      "VideoBox": {
+        "watchlater": "regarder plus tard",
+        "removeWatchLater": "ne plus regarder plus tard"
+      },
       "Filters": {
         "sort_by": "trier par",
         "date": "date d'ajout",
@@ -44,6 +48,10 @@
         "apply": "appliquer les filtres"
       }
     },
-    "organisms":{}
+    "organisms":{
+      "WatchLater": {
+        "novideo": "Aucune video à regarder."
+      }
+    }
   }
 }

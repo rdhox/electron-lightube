@@ -43,6 +43,7 @@ interface State {
   displayModalAlert: ModalAlert;
   isSearchModalDisplayed: boolean;
   isSettingsModalDisplayed: boolean;
+  isWatchLaterModalDisplayed: boolean;
   showChannel: boolean;
   searchInChannel: boolean;
   backToSearch: boolean;
@@ -65,6 +66,7 @@ const app: Model<State> = (update, get) => ({
     displayModalAlert: {},
     isSearchModalDisplayed: false,
     isSettingsModalDisplayed: false,
+    isWatchLaterModalDisplayed: false,
     showChannel: false,
     searchInChannel: false,
     backToSearch: false,
@@ -124,6 +126,12 @@ const app: Model<State> = (update, get) => ({
       update(state => ({
         ...state,
         isSettingsModalDisplayed
+      }));
+    },
+    setIsWatchLaterModalDisplayed(isWatchLaterModalDisplayed) {
+      update(state => ({
+        ...state,
+        isWatchLaterModalDisplayed
       }));
     },
     setVideosToDisplay(videosToDisplay) {

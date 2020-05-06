@@ -14,6 +14,7 @@ import { ReactComponent as UnsubscribeIcon } from '../../assets/icons/unsubscrib
 import { ReactComponent as NoImageIcon } from '../../assets/icons/noimage.svg';
 import { ReactComponent as FilterIcon } from '../../assets/icons/filter.svg';
 import { ReactComponent as VideoIcon } from '../../assets/icons/video.svg';
+import { ReactComponent as TimeIcon } from '../../assets/icons/time.svg';
 
 type SizeType = number | string;
 
@@ -44,7 +45,8 @@ const svgs: SvgsType = {
   unsubscribe: UnsubscribeIcon,
   noimage: NoImageIcon,
   filter: FilterIcon,
-  video: VideoIcon
+  video: VideoIcon,
+  time: TimeIcon,
 };
 
 const Picto: React.SFC <Props> = props => {

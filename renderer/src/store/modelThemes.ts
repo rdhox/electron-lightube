@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { Model } from './index';
 import { apiApp } from './index';
+import { Thumbnail } from './apiType';
 
 export interface Theme {
   id: keyof Themes;
@@ -23,9 +24,20 @@ export interface ChannelsInThemes {
   [key: string]: ChannelSaved[];
 };
 
+export interface SeeLaterVideo {
+  videoId: string;
+  title: string;
+  videoThumbnails: Thumbnail[];
+  author: string;
+  authorId: string;
+  lengthSeconds: number;
+  viewCountText?: number | string;
+}
+
 export interface ThemesState {
   themes: Themes;
   channels: ChannelsInThemes;
+  watchlater: SeeLaterVideo[];
 };
 
 const themes: Model<ThemesState> = (update, get) => ({
@@ -39,6 +51,7 @@ const themes: Model<ThemesState> = (update, get) => ({
     channels: {
       "0": []
     },
+    watchlater: [] as SeeLaterVideo[],
   },
   reducers: {
     initialize(initialState) {
@@ -116,46 +129,28 @@ const themes: Model<ThemesState> = (update, get) => ({
         ...state,
         channels
       }));
-    }
+    },
+    addVideoOnWatchLater(video: SeeLaterVideo) {
+      const watchlater: SeeLaterVideo[] = JSON.parse(JSON.stringify(get().state.watchlater));
+      watchlater.push(video);
+      update(state => ({
+        ...state,
+        watchlater
+      }));
+    },
+    removeVideoOnWatchLater(idVideo: string) {
+      const watchlater = JSON.parse(JSON.stringify(get().state.watchlater));
+      const indexToDelete = watchlater.findIndex(video => video.videoId === idVideo);
+
+      if(indexToDelete !== -1) {
+        watchlater.splice(indexToDelete, 1);
+        update(state => ({
+          ...state,
+          watchlater
+        }));
+      }
+    },
   }
 });
 
 export default themes;
-
-// const mock = [
-//   {
-//     image: "https://yt3.ggpht.com/a/AATXAJw0Y_zVoHt4IIiI62DKOnJJBPnOl4zN7zH-nQ=s100-c-k-c0xffffffff-no-rj-mo",
-//     author: "BoxEntertainment",
-//     authorId: "UCe82Pwam1NggI6pWK8oNbjA",
-//     subCount: 85900,
-//     description: "BoxEntertainment - The Boxing Lifestyle"
-//   },
-//   {
-//     image: "https://yt3.ggpht.com/a/AATXAJwHN8rZE_7fXQaBcR9-25hvPVTNSuNaVknZlg=s100-c-k-c0xffffffff-no-rj-mo",
-//     author: "Boxing Physique",
-//     authorId: "UC9qVqkzlo_ddKrDTkVKEPAA",
-//     subCount: 188000,
-//     description: "Boxing Physique comes with boxing training!↵Contact me at boxingphysique@gmail.com",
-//   },
-//   {
-//     image: "https://yt3.ggpht.com/a/AATXAJzWrGw-jQDhkbu_ayk6-DqQ-HhyV1dJjCB0dA=s100-c-k-c0xffffffff-no-rj-mo",
-//     author: "GMA Public Affairs",
-//     authorId: "UCj5RwDivLksanrNvkW0FB4w",
-//     subCount: 10200000,
-//     description: "GMA Public Affairs is the home of the Philippines' best documentary, docudrama, news magazine, and lifestyle TV programming. Visit this YouTube channel for daily video clips from your favorite GMA Network and GMA News TV public affairs shows like Kapuso Mo, Jessica Soho, Wish Ko Lang, I-Witness, Imbestigador, Reporter's Notebook, Aha!, Pinoy MD, Tunay na Buhay, Born to be Wild, and Unang Hirit. We've also got videos from GMA News TV programs like Brigada, Pinas Sarap, IJuander, Investigative Documentaries, Biyahe ni Drew, Reel Time, Front Row, Ang Pinaka, and more.",
-//   },
-//   {
-//     image: "https://yt3.ggpht.com/a/AATXAJzpYc5DRYgsgbKE4-BlWCaxAAvVZalPj2eFVA=s100-c-k-c0xffffffff-no-rj-mo",
-//     author: "SportsTalk PH",
-//     authorId: "UCzzflHnkC32Z7oOP5GxyZ_Q",
-//     subCount: 322000,
-//     description: "Welcome to SportsTalk PH. Usapang sports lang lahat mga idol. Wag kakalimutang subscribe bilang suporta sa channel natin. Maraming salamat!"
-//   },
-//   {
-//     image: "https://yt3.ggpht.com/a/AATXAJwjbUKne9y9VzlFWLMl_1IM7icLEeACFLB24w=s100-c-k-c0xffffffff-no-rj-mo",
-//     author: "Fight Hub TV",
-//     authorId: "UCwdVyruxCCqMR4DtPLhtwlg",
-//     subCount: 773000,
-//     description: "Fight Hub TV brings to you daily video content from the world of combat sports which includes Boxing interviews, Boxing Videos, MMA videos and MMA interviews with your favorite fighters from MMA to boxing and much more!↵↵Powered by SB Nation and founded by Marcos Villegas"
-//   }
-// ]

@@ -26,6 +26,7 @@ const store = new Store({
         channels: {
           "0": []
         },
+        watchlater: []
       },
     }
   }
@@ -57,6 +58,8 @@ async function createWindow() {
   });
 
   blocker.enableBlockingInSession(session.defaultSession);
+  
+  // store.clear();
 
   // initialize with data
   mainWindow.webContents.on('did-finish-load', () => {

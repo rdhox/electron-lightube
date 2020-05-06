@@ -1,23 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { VideoPlaylist, RecommendedVideo } from '../../store/apiType';
+import { VideoPlaylist, RecommendedVideo, Thumbnail } from '../../store/apiType';
 import { useApp } from '../../store';
+import { SeeLaterVideo } from '../../store/modelThemes';
 //import components
 import VideoBox from './VideoBox';
 import Spinner from '../atoms/Spinner';
 
 interface Props {
-  // videos?:  VideoPlaylist[] | RecommendedVideo[];
-  videos:  Array<RecommendedVideo | VideoPlaylist>;
-  loading: boolean
+  videos:  Array<RecommendedVideo | VideoPlaylist | SeeLaterVideo>;
+  loading?: boolean
 };
 
 const ListVideos: React.SFC<Props> = props => {
 
   const {
     videos = [],
-    loading
+    loading = false
   } = props
 
   const selectedVideo = useApp(appState => appState.state.selectedVideo);

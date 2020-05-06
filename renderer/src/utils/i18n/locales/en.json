@@ -22,6 +22,10 @@
       "VideoInfos": {
         "views": "views"
       },
+      "VideoBox": {
+        "watchlater": "watch later",
+        "removeWatchLater": "do not watch later anymore"
+      },
       "Filters": {
         "sort_by": "sort by",
         "date": "date",
@@ -44,6 +48,10 @@
         "apply": "apply filters"
       }
     },
-    "organisms":{}
+    "organisms":{
+      "WatchLater": {
+        "novideo": "No video saved."
+      }
+    }
   }
 }

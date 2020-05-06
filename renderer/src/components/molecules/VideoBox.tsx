@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { apiApp, ReducerEffect } from '../../store';
+import { apiApp, ReducerEffect, apiThemes, StateRef } from '../../store';
 import {formatLength} from '../../utils/functions';
 // import components
 import Picto from '../atoms/Picto';
 import Thumbnail from '../atoms/Thumbnail';
+import { SeeLaterVideo } from '../../store/modelThemes';
 
 interface Props {
   videoId: string;
@@ -32,9 +34,33 @@ const VideoBox: React.SFC<Props> = props => {
     fetchChannelInfos(authorId);
   }
 
+  function handleWatchLater(): void {
+    if (onWatchList) {
+      removeVideoOnWatchLater(videoId);
+    } else {
+      addVideoOnWatchLater({
+        videoId,
+        title,
+        videoThumbnails: [{url:thumbnail},{url:thumbnail},{url:thumbnail},{url:thumbnail},{url:thumbnail}],
+        author,
+        authorId,
+        lengthSeconds: length,
+        viewCountText: viewCount
+      });
+    }
+  }
+
+  const [ t ]= useTranslation();
+
   const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
   const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
   const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
+
+  const addVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.addVideoOnWatchLater;
+  const removeVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.removeVideoOnWatchLater;
+  const watchLaterRef: StateRef<SeeLaterVideo[]> = useRef(apiThemes.getState().state.watchlater);
+
+  const [ onWatchList, setOnWatchList ] = useState<boolean>(false);
 
   const {
     videoId,
@@ -51,6 +77,32 @@ const VideoBox: React.SFC<Props> = props => {
     light = false,
     selected = false
   } = props;
+
+  useEffect(() => {
+    function checkOnWatchLater(list: SeeLaterVideo[]) {
+      const index = list.find(video => video.videoId === videoId);
+      console.log(index);
+      if(index) {
+        setOnWatchList(true);
+      }
+    }
+
+    const unsubCheckWatchLater = apiThemes.subscribe(
+      (watchlater: SeeLaterVideo[]) => {
+        watchLaterRef.current = watchlater;
+        checkOnWatchLater(watchLaterRef.current);
+      },
+      themesState => themesState.state.watchlater
+    );
+
+    checkOnWatchLater(watchLaterRef.current);
+
+    return () => {
+      unsubCheckWatchLater();
+    }
+  }, [videoId]);
+
+  console.log(onWatchList);
 
   const delay = (index % 20) / 8;
 
@@ -123,6 +175,9 @@ const VideoBox: React.SFC<Props> = props => {
         )}
         <Row>
           <SmallText>{publishedText}</SmallText>
+          <SmallTextButton onClick={handleWatchLater}>
+            {onWatchList ? t('molecules.VideoBox.removeWatchLater') : t('molecules.VideoBox.watchlater')}
+          </SmallTextButton>
         </Row>
       </Column>
     </Container>
@@ -220,6 +275,17 @@ const Author = styled.span`
 
 const SmallText = styled.span`
   font-size: 12px;
+`;
+
+const SmallTextButton = styled.span`
+  font-size: 12px;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const P = styled.p`
