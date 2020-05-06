@@ -10,12 +10,14 @@ import {
 } from '../services/apiService';
 import {
   Channel,
+  ChannelFromApi,
   VideoDetails,
   Video,
   IComments,
   Filters,
   Playlist
 } from './apiType';
+import { ResponseToModel } from '../utils/request';
 
 export interface ModalAlert {
   title?: string;
@@ -210,14 +212,14 @@ const app: Model<State> = (update, get) => ({
 
       const params: string = `?q=${query}&page=${page}${sort_by !== '' ? `&sort_by=${sort_by}`: ''}${date !== '' ? `&date=${date}`: ''}${duration !== '' ? `&duration=${duration}` : ''}${type !== '' ? `&type=${type}`: ''}`;
 
-      const result: VideoDetails[] = await getResultGlobalSearch(params);
-      if (result) {
+      const result: ResponseToModel<VideoDetails[]> = await getResultGlobalSearch<VideoDetails[]>(params);
+      if (!result.error) {
         update(state => ({
           ...state,
           currentSearch: query,
           videosToDisplay: [
             ...state.videosToDisplay,
-            ...result
+            ...result.data
           ],
         }));
       }
@@ -226,8 +228,8 @@ const app: Model<State> = (update, get) => ({
       const setShowChannel = get().reducers.setShowChannel;
       setShowChannel(true);
 
-      const result = await getInfosFromChannel(channel);
-      if (result) {
+      const result: ResponseToModel<ChannelFromApi> = await getInfosFromChannel<ChannelFromApi>(channel);
+      if (!result.error) {
         const {
           author,
           authorId,
@@ -235,7 +237,7 @@ const app: Model<State> = (update, get) => ({
           subCount,
           description,
           latestVideos,
-        } = result;
+        } = result.data;
 
         update(state => ({
           ...state,
@@ -267,8 +269,8 @@ const app: Model<State> = (update, get) => ({
           channelInfos: {},
         }));
       }
-      const result: VideoDetails[] = await getVideosFromChannel(`${authorId}?page=${page}`);
-      if (result) {
+      const result: ResponseToModel<VideoDetails[]> = await getVideosFromChannel<VideoDetails[]>(`${authorId}?page=${page}`);
+      if (!result.error) {
         if(page === 1) {
           update(state => ({
             ...state,
@@ -278,7 +280,7 @@ const app: Model<State> = (update, get) => ({
               authorThumbnails: image,
               subCount,
               description,
-              latestVideos: result,
+              latestVideos: result.data,
             },
           }));
         } else if (page > 1) {
@@ -288,7 +290,7 @@ const app: Model<State> = (update, get) => ({
               ...state.channelInfos,
               latestVideos: [
                 ...state.channelInfos.latestVideos,
-                ...result
+                ...result.data
               ],
             },
           }));
@@ -311,8 +313,8 @@ const app: Model<State> = (update, get) => ({
 
       const queryString: string = query !== '' ? query : currentSearch;
 
-      const result: VideoDetails[] = await getResultFromChannel(`${selectedChannel}?q=${queryString}&page=${page}`);
-      if (result) {
+      const result: ResponseToModel<VideoDetails[]> = await getResultFromChannel<VideoDetails[]>(`${selectedChannel}?q=${queryString}&page=${page}`);
+      if (!result.error) {
         update(state => ({
           ...state,
           currentSearch: queryString,
@@ -321,36 +323,36 @@ const app: Model<State> = (update, get) => ({
             ...state.channelInfos,
             latestVideos: [
               ...state.channelInfos.latestVideos,
-              ...result
+              ...result.data
             ],
           },
         }));
       }
     },
     fetchVideo: async function(idVideo: string) {
-      const result: Video = await getVideo(idVideo);
-      if (result) {
+      const result: ResponseToModel<Video> = await getVideo<Video>(idVideo);
+      if (!result.error) {
         update(state => ({
           ...state,
-          selectedVideo: result
+          selectedVideo: result.data
         }))
       }
     },
     fetchComments: async function(idVideo: string) {
-      const result: IComments = await getComments(idVideo);
-      if (result) {
+      const result: ResponseToModel<IComments> = await getComments<IComments>(idVideo);
+      if (!result.error) {
         update(state => ({
           ...state,
-          commentsCollection: result
+          commentsCollection: result.data
         }))
       }
     },
     fetchPlaylist: async function(idPlaylist: string) {
-      const result: Playlist = await getPlaylist(idPlaylist);
-      if (result) {
+      const result: ResponseToModel<Playlist> = await getPlaylist<Playlist>(idPlaylist);
+      if (!result.error) {
         update(state => ({
           ...state,
-          playlistSelected: result
+          playlistSelected: result.data
         }))
       }
     }

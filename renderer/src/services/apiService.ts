@@ -3,10 +3,10 @@ import { baseUrl } from '../config/hardData';
 
 const api: API = new tubeApi(baseUrl);
 
-export const getResultGlobalSearch = data => api.getResultGlobalSearch(data);
-export const getInfosFromChannel = data => api.getInfosFromChannel(data);
-export const getVideosFromChannel = data => api.getVideosFromChannel(data);
-export const getResultFromChannel = data => api.getResultFromChannel(data);
-export const getVideo = data => api.getVideo(data);
-export const getComments = data => api.getComments(data);
-export const getPlaylist = data => api.getPlaylist(data);
+export const getResultGlobalSearch = <T>(data) => api.getResultGlobalSearch<T>(data);
+export const getInfosFromChannel = <T>(data) => api.getInfosFromChannel<T>(data);
+export const getVideosFromChannel = <T>(data) => api.getVideosFromChannel<T>(data);
+export const getResultFromChannel = <T>(data) => api.getResultFromChannel<T>(data);
+export const getVideo = <T>(data) => api.getVideo<T>(data);
+export const getComments = <T>(data) => api.getComments<T>(data);
+export const getPlaylist = <T>(data) => api.getPlaylist<T>(data);

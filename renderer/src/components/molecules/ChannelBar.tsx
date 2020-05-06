@@ -50,7 +50,7 @@ const ChannelBar: React.SFC<Props> = props => {
 
   const [ display, setDisplay ] = useState<boolean>(showChannelRef.current);
   const [ loading, setLoading ] = useState<boolean>(loadingRef.current);
-  const [ image, setImage ] = useState<string>(channelInfosRef.current.authorThumbnails ? channelInfosRef.current.authorThumbnails : '');
+  const [ image, setImage ] = useState<(string)>(channelInfosRef.current.authorThumbnails ? channelInfosRef.current.authorThumbnails : '');
   const [ author, setAuthor ] = useState<string>(channelInfosRef.current.author ? channelInfosRef.current.author : '');
   const [ authorId, setAuthorId ] = useState<string>(channelInfosRef.current.authorId ? channelInfosRef.current.authorId : '');
   const [ subCount, setSubCount ] = useState<number>(channelInfosRef.current.subCount ? channelInfosRef.current.subCount : null);

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import { apiSettings, apiThemes, ReducerEffect } from '../store';
-import { SettingsState } from '../store/modelSettings'
+import { SettingsState } from '../store/modelSettings';
 import { ThemesState } from '../store/modelThemes';
 // import components
 import Header from '../components/organisms/Header';
@@ -53,6 +55,7 @@ const MainLayout : React.SFC = () => {
       <Header />
       <Main />
       <ModalLayout />
+      <ToastContainer />
     </Container>
   );
 }

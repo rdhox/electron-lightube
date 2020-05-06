@@ -1,9 +1,18 @@
-export async function request(
+import { toast } from 'react-toastify';
+
+export interface ResponseToModel<T> {
+  error: boolean,
+  message: string,
+  data: T;
+}
+
+
+export async function request<T>(
   endPoint: string,
   method: string = 'GET',
   body: any = false,
   baseUrl: string,
-) {
+): Promise<ResponseToModel<T>> {
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -26,14 +35,20 @@ export async function request(
     headers,
   }).then(response => {
     if (response.status === 200) {
-      return response
-        .json()
-        .then(json => {
-          return json !== undefined ? json : {};
-        })
-        .catch(e => ({}));
+      return response.json();
+    } else {
+      throw new Error(response.statusText);
     }
-    return response.status;
   })
-  .catch(e => console.error(e));
+  .then(data => {
+      return ({
+          error: false,
+          message: '',
+          data
+      });
+    })
+  .catch((error: Error) => {
+    toast.error(error);
+    throw error;
+  })
 }

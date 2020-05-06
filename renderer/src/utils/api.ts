@@ -1,6 +1,6 @@
-import { request } from './request';
+import { request, ResponseToModel } from './request';
 
-type apiRequest = (data: any) => any;
+type apiRequest = <T>(data: any) => Promise<ResponseToModel<T>>;
 
 export interface API {
   url: string;
@@ -13,23 +13,37 @@ export interface API {
   getPlaylist: apiRequest;
 }
 
-class tubeApi implements API {
+class tubeApi {
   url: string;
   constructor(baseUrl: string) {
     this.url = baseUrl;
   }
   // search
-  getResultGlobalSearch = data => request('/api/v1/search', 'GET', data, this.url);
+  getResultGlobalSearch<T>(data){
+    return request<T>('/api/v1/search', 'GET', data, this.url);
+  }
   // channels
-  getInfosFromChannel = data => request('/api/v1/channels', 'GET', data, this.url);
-  getVideosFromChannel = data => request('/api/v1/channels/videos', 'GET', data, this.url);
-  getResultFromChannel = data => request('/api/v1/channels/search', 'GET', data, this.url);
+  getInfosFromChannel<T>(data) {
+    return request<T>('/api/v1/channels', 'GET', data, this.url);
+  }
+  getVideosFromChannel<T>(data) {
+    return request<T>('/api/v1/channels/videos', 'GET', data, this.url);
+  }
+  getResultFromChannel<T>(data) {
+    return request<T>('/api/v1/channels/search', 'GET', data, this.url);
+  }
   // videos
-  getVideo = data => request('/api/v1/videos', 'GET', data, this.url);
+  getVideo<T>(data) {
+    return request<T>('/api/v1/videos', 'GET', data, this.url);
+  }
   // comments
-  getComments = data => request('/api/v1/comments', 'GET', data, this.url);
+  getComments<T>(data) {
+    return request<T>('/api/v1/comments', 'GET', data, this.url);
+  }
   // playlist
-  getPlaylist = data => request('/api/v1/playlists', 'GET', data, this.url);
+  getPlaylist<T>(data) {
+    return request<T>('/api/v1/playlists', 'GET', data, this.url);
+  }
 
 }
 

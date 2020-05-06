@@ -7,6 +7,15 @@ export interface Channel {
   latestVideos: VideoDetails[];
 };
 
+export interface ChannelFromApi {
+  author: string;
+  authorId: string;
+  authorThumbnails: AuthorThumbnail;
+  subCount: number;
+  description: string;
+  latestVideos: VideoDetails[];
+};
+
 export interface AuthorThumbnail {
   url: string;
   width: number;
