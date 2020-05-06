@@ -1,8 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, session } = require('electron');
 // Because of a bug typescript/ES transpil with electron-store, we keep the file no TS.
 const Store = require('electron-store');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const fetch = require('node-fetch');
+const { promises } = require('fs');
+const { ElectronBlocker, fullLists } = require('@cliqz/adblocker-electron');
 require('electron-reload');
 
 let mainWindow;
@@ -28,7 +31,7 @@ const store = new Store({
   }
 });
 
-function createWindow() {
+async function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -40,6 +43,20 @@ function createWindow() {
       webSecurity: !isDev
     },
   });
+
+  if (session.defaultSession === undefined) {
+    throw new Error('defaultSession is undefined');
+  }
+
+  const blocker = await ElectronBlocker.fromLists(fetch, fullLists, {
+    enableCompression: true,
+  }, {
+    path: 'engine.bin',
+    read: promises.readFile,
+    write: promises.writeFile,
+  });
+
+  blocker.enableBlockingInSession(session.defaultSession);
 
   // initialize with data
   mainWindow.webContents.on('did-finish-load', () => {
