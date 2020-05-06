@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { VideoPlaylist } from '../../store/apiType';
+import { VideoPlaylist, RecommendedVideo } from '../../store/apiType';
 import { useApp } from '../../store';
 //import components
 import VideoBox from './VideoBox';
 import Spinner from '../atoms/Spinner';
 
 interface Props {
-  videos?: VideoPlaylist[];
+  // videos?:  VideoPlaylist[] | RecommendedVideo[];
+  videos:  Array<RecommendedVideo | VideoPlaylist>;
   loading: boolean
 };
 
-const PlaylistVideos: React.SFC<Props> = props => {
+const ListVideos: React.SFC<Props> = props => {
 
   const {
     videos = [],
@@ -35,6 +36,7 @@ const PlaylistVideos: React.SFC<Props> = props => {
         authorId,
         videoThumbnails,
         lengthSeconds,
+        viewCountText
       } = video;
 
       return (
@@ -46,6 +48,7 @@ const PlaylistVideos: React.SFC<Props> = props => {
             authorId={authorId}
             thumbnail={videoThumbnails[4].url}
             length={lengthSeconds}
+            viewCount={viewCountText}
             index={i}
             onChannel={false}
             light
@@ -64,4 +67,4 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-export default PlaylistVideos;
+export default ListVideos;

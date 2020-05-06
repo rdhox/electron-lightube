@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-import { useApp, apiApp } from '../../store';
+import { useApp, apiApp, ReducerEffect } from '../../store';
+import { Video, Playlist } from '../../store/apiType';
 // import components
-import Suggestions from '../molecules/Suggestions';
-import PlaylistVideos from '../molecules/PlaylistVideos';
+import ListVideos from '../molecules/ListVideos';
 import Player from '../molecules/Player';
 import VideoInfos from '../molecules/VideoInfos';
 import Comments from '../molecules/Comments';
@@ -15,17 +15,17 @@ interface Props {};
 const VideoPage: React.SFC<Props> = props => {
 
   const { idVideo } = useParams();
-  const [video, setVideo] = useState<string>(idVideo);
+  const [ video, setVideo ] = useState<string>(idVideo);
 
-  const resetSearch = apiApp.getState().reducers.resetSearch;
-  const fetchVideo = apiApp.getState().effects.fetchVideo;
-  const setSelectedVideo = apiApp.getState().reducers.setSelectedVideo;
-  const setCommentsCollection = apiApp.getState().reducers.setCommentsCollection;
-  const setPlaylistSelected = apiApp.getState().reducers.setPlaylistSelected;
+  const resetSearch: ReducerEffect = apiApp.getState().reducers.resetSearch;
+  const fetchVideo: ReducerEffect = apiApp.getState().effects.fetchVideo;
+  const setSelectedVideo: ReducerEffect = apiApp.getState().reducers.setSelectedVideo;
+  const setCommentsCollection: ReducerEffect = apiApp.getState().reducers.setCommentsCollection;
+  const setPlaylistSelected: ReducerEffect = apiApp.getState().reducers.setPlaylistSelected;
 
-  const selectedVideo = useApp(appState => appState.state.selectedVideo);
-  const playlistSelected = useApp(appState => appState.state.playlistSelected);
-  const loading = useApp(appState => appState.state.loading);
+  const selectedVideo: Video = useApp(appState => appState.state.selectedVideo);
+  const playlistSelected: Playlist = useApp(appState => appState.state.playlistSelected);
+  const loading: boolean = useApp(appState => appState.state.loading);
 
   useEffect(() => {
     if(idVideo !== video) {
@@ -47,8 +47,8 @@ const VideoPage: React.SFC<Props> = props => {
     }
   }, [idVideo, playlistSelected, setPlaylistSelected]);
 
-  let image = '';
 
+  let image = '';
   if(selectedVideo.authorThumbnails) {
     image = selectedVideo.authorThumbnails[4].url;
   }
@@ -71,17 +71,10 @@ const VideoPage: React.SFC<Props> = props => {
           <Comments video={idVideo} />
       </Column>
       <Column width={30}>
-        {Object.keys(playlistSelected).length > 0 ? (
-          <PlaylistVideos
-            videos={playlistSelected.videos}
-            loading={loading}
-          />
-        ): (
-          <Suggestions
-            videos={selectedVideo.recommendedVideos}
-            loading={loading}
-          />
-        )}
+        <ListVideos
+          videos={Object.keys(playlistSelected).length > 0 ? playlistSelected.videos : selectedVideo.recommendedVideos}
+          loading={loading}
+        />
       </Column>
     </Container>
   );

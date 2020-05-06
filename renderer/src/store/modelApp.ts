@@ -196,7 +196,6 @@ const app: Model<State> = (update, get) => ({
       } = get().state.filters;
 
 
-
       if(showChannel) {
         setShowChannel(false);
       }
@@ -217,7 +216,7 @@ const app: Model<State> = (update, get) => ({
           ...state,
           currentSearch: query,
           videosToDisplay: [
-            ...videosToDisplay,
+            ...state.videosToDisplay,
             ...result
           ],
         }));

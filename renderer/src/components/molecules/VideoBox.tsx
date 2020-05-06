@@ -28,11 +28,13 @@ const VideoBox: React.SFC<Props> = props => {
 
   function handleClickAuthor(): void {
     setIsSearchModalDisplayed(true);
+    setIsFiltersOn(false);
     fetchChannelInfos(authorId);
   }
 
   const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
   const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
+  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
 
   const {
     videoId,
@@ -155,7 +157,7 @@ const Container = styled.div<{delay: number, light?: boolean, selected?: boolean
   animation-delay: ${({delay}) => `${delay}s`};
   animation-fill-mode: forwards;
   border-bottom: solid 1px #F5F5F5;
-  background-color: ${({selected}) => selected ? '#BBDEFB' : 'transparent'};
+  background-color: ${({selected}) => selected ? '#F5F5F5' : 'transparent'};
 `;
 
 const LinkStyle = styled(Link)`

@@ -14,8 +14,7 @@ interface Props {}
 const InputSearch: React.SFC<Props> = props => {
 
   function handleDisplayFilters(): void {
-    setIsFiltersOn(!dropFilters);
-    setDropFilters(b => !b);
+    setIsFiltersOn(!isFiltersOn);
   }
 
   function handleKeyEnter(e: React.KeyboardEvent){
@@ -30,6 +29,7 @@ const InputSearch: React.SFC<Props> = props => {
         launchSearchOnChannel(searchValue);
       } else {
         setIsSearchModalDisplayed(true);
+        setIsFiltersOn(false);
         launchSearch(searchValue);
       }
     }
@@ -37,6 +37,7 @@ const InputSearch: React.SFC<Props> = props => {
 
   const selectedChannel: string = useApp(appState => appState.state.selectedChannel);
   const channelInfos: Channel = useApp(appState => appState.state.channelInfos);
+  const isFiltersOn: boolean = useApp(appState => appState.state.isFiltersOn);
 
   const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
   const launchSearchOnChannel: ReducerEffect = apiApp.getState().effects.launchSearchOnChannel;
@@ -44,7 +45,6 @@ const InputSearch: React.SFC<Props> = props => {
   const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
 
   const [searchValue, setSearchValue] = useState<string>("");
-  const [ dropFilters, setDropFilters ] = useState(false);
 
   const { t } = useTranslation();
 
@@ -53,8 +53,7 @@ const InputSearch: React.SFC<Props> = props => {
     channelOn = true;
 
   return (
-    <Container
-    >
+    <Container>
       <Row
         onKeyDown={handleKeyEnter}
         channel={channelOn}
@@ -80,7 +79,7 @@ const InputSearch: React.SFC<Props> = props => {
               heightIcon={35}
               width={70}
               height={50}
-              backgroundColor={dropFilters ? "#BBDEFB" : "#FAFAFA"}
+              backgroundColor={isFiltersOn ? "#BBDEFB" : "#FAFAFA"}
             />
             <Separator />
           </>
@@ -96,7 +95,7 @@ const InputSearch: React.SFC<Props> = props => {
           backgroundColor="#FAFAFA"
         />
        </Row>
-       {dropFilters && <FiltersMenu />}
+       {isFiltersOn && <FiltersMenu />}
     </Container>
   );
 }

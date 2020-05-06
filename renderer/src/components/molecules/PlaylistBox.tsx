@@ -52,8 +52,6 @@ const PlaylistBox: React.SFC<Props> = props => {
 
   const delay = (index % 20) / 8;
 
-  console.log(author);
-
   return (
     <Container delay={delay} light={light}>
       <Column width={210} align={light ? "center" : "space-between"}>

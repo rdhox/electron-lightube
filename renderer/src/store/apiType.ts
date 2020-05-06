@@ -160,6 +160,7 @@ export interface VideoPlaylist {
   videoThumbnails: Thumbnail[];
   index: number;
   lengthSeconds: number;
+  viewCountText?: string;
 }
 
 export interface Playlist {

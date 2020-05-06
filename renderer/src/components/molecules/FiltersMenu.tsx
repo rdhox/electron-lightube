@@ -56,10 +56,10 @@ const FiltersMenu:React.SFC<Props> = props => {
   const setFilters: ReducerEffect = apiApp.getState().reducers.setFilters;
 
   const [ t ] = useTranslation();
-  const [ sortBy, setSortBy ] = useState<SortBy>('relevance');
-  const [ date, setDate ] = useState<Date>('');
-  const [ duration, setDuration ] = useState<Duration>('');
-  const [ type, setType ] = useState<Type>('video');
+  const [ sortBy, setSortBy ] = useState<SortBy>(filtersRef.current.sort_by !== '' ? filtersRef.current.sort_by : 'relevance');
+  const [ date, setDate ] = useState<Date>(filtersRef.current.date !== '' ? filtersRef.current.date : '');
+  const [ duration, setDuration ] = useState<Duration>(filtersRef.current.duration !== '' ? filtersRef.current.duration : '');
+  const [ type, setType ] = useState<Type>(filtersRef.current.type !== '' ? filtersRef.current.type : 'video');
 
   useEffect(() => {
     const unsubFilters = apiApp.subscribe(

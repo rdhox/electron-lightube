@@ -20,6 +20,7 @@ const ListChannels: React.SFC<Props> = props => {
     setIsSearchModalDisplayed(true);
     setShowChannel(true);
     setSelectedChannel(authorId);
+    setIsFiltersOn(false);
     fetchChannelVideo(
       authorId,
       1,
@@ -34,6 +35,7 @@ const ListChannels: React.SFC<Props> = props => {
   const fetchChannelVideo: ReducerEffect = apiApp.getState().effects.fetchChannelVideo;
   const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
   const setSelectedChannel: ReducerEffect = apiApp.getState().reducers.setSelectedChannel;
+  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
 
   const channels: ChannelsInThemes = useThemes(themesState => themesState.state.channels);
   const selectedTheme: string = useApp(appState => appState.state.selectedTheme);
