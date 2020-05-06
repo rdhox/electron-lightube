@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+
+import { apiApp, ReducerEffect, StateRef } from '../../store';
 // import components
 import InputSearch from '../molecules/InputSearch';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -12,8 +14,21 @@ export interface Props {}
 const Header: React.SFC <Props> = () => {
   
   function clickSettings() {
-    console.log('settings');
+    setIsSettingsModalDisplayed(!isSettingsModalDisplayedRef.current);
   }
+
+  const setIsSettingsModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSettingsModalDisplayed;
+  const isSettingsModalDisplayedRef: StateRef<boolean> = useRef(apiApp.getState().state.isSettingsModalDisplayed);
+
+  useEffect(() => {
+    const unsubSettingsTrigger =  apiApp.subscribe(
+      (isSettingsModalDisplayed: boolean) => isSettingsModalDisplayedRef.current = isSettingsModalDisplayed,
+      appState => appState.state.isSettingsModalDisplayed
+    );
+    return () => {
+      unsubSettingsTrigger();
+    }
+  }, []);
 
   return (
     <Container>

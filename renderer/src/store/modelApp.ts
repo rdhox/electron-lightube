@@ -42,6 +42,7 @@ interface State {
   isDeleteThemeDisplayed: boolean;
   displayModalAlert: ModalAlert;
   isSearchModalDisplayed: boolean;
+  isSettingsModalDisplayed: boolean;
   showChannel: boolean;
   searchInChannel: boolean;
   backToSearch: boolean;
@@ -63,6 +64,7 @@ const app: Model<State> = (update, get) => ({
     isDeleteThemeDisplayed: false,
     displayModalAlert: {},
     isSearchModalDisplayed: false,
+    isSettingsModalDisplayed: false,
     showChannel: false,
     searchInChannel: false,
     backToSearch: false,
@@ -116,6 +118,12 @@ const app: Model<State> = (update, get) => ({
       update(state => ({
         ...state,
         isSearchModalDisplayed
+      }));
+    },
+    setIsSettingsModalDisplayed(isSettingsModalDisplayed) {
+      update(state => ({
+        ...state,
+        isSettingsModalDisplayed
       }));
     },
     setVideosToDisplay(videosToDisplay) {

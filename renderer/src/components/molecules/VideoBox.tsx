@@ -156,8 +156,8 @@ const Container = styled.div<{delay: number, light?: boolean, selected?: boolean
   animation-timing-function: ease-out;
   animation-delay: ${({delay}) => `${delay}s`};
   animation-fill-mode: forwards;
-  border-bottom: solid 1px #F5F5F5;
-  background-color: ${({selected}) => selected ? '#F5F5F5' : 'transparent'};
+  border-bottom: ${({selected}) => selected ? 'solid 3px #E0E0E0' : 'solid 1px #F5F5F5'};
+  border-top: ${({selected}) => selected ? 'solid 3px #E0E0E0' : 'none'};
 `;
 
 const LinkStyle = styled(Link)`

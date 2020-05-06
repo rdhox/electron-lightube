@@ -19,22 +19,28 @@ const Comments: React.SFC<Props> = props => {
   const commentsCollection: IComments = useApp(appState => appState.state.commentsCollection);
 
   const [ idVideo, setIdVideo ] = useState<string>(video);
+  const [ stopSpinner, setStopSpinner ] = useState<boolean>(false);
 
   useEffect(() => {
     if(video !== idVideo) {
       setIdVideo(video);
     } else if (video === idVideo) {
+      setStopSpinner(false);
       fetchComments(video);
     }
   }, [video, idVideo, setIdVideo, fetchComments, commentsCollection]);
 
-  if(Object.keys(commentsCollection).length < 1) {
+  useEffect(() => {
+    setTimeout(() => setStopSpinner(true), 4000);
+  }, []);
+
+  if(Object.keys(commentsCollection).length < 1 && !stopSpinner) {
     return <Spinner />
   }
 
   return (
     <Container>
-      {commentsCollection.comments.map((comment, i) => {
+      {commentsCollection?.comments?.length > 0 && commentsCollection.comments.map((comment, i) => {
         const {
           author,
           authorThumbnails,

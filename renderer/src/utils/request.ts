@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 export interface ResponseToModel<T> {
   error: boolean,
   message: string,
-  data: T;
+  data?: T;
 }
 
 
@@ -37,7 +37,7 @@ export async function request<T>(
     if (response.status === 200) {
       return response.json();
     } else {
-      throw new Error(response.statusText);
+      throw response.statusText;
     }
   })
   .then(data => {
@@ -47,8 +47,11 @@ export async function request<T>(
           data
       });
     })
-  .catch((error: Error) => {
+  .catch((error: string) => {
     toast.error(error);
-    throw error;
-  })
+    return ({
+      error: true,
+      message: error,
+    });
+  });
 }
