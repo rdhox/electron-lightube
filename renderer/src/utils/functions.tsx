@@ -16,3 +16,20 @@ export function getFormatDate(timestamp: number): string {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString(locale, options);
 }
+
+export function shuffleArray<T>(array: Array<T>): Array<T> {
+  let currentIndex: number = array.length;
+  let temporaryValue: T;
+  let randomIndex: number;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

@@ -1,4 +1,8 @@
+import { toast } from 'react-toastify';
+
 import { Model } from './index';
+import { apiThemes } from './index';
+import { ChannelsInThemes, ChannelSaved } from './modelThemes';
 import {
   getResultGlobalSearch,
   getInfosFromChannel,
@@ -18,6 +22,7 @@ import {
   Playlist
 } from './apiType';
 import { ResponseToModel } from '../utils/request';
+import { shuffleArray } from '../utils/functions';
 
 export interface ModalAlert {
   title?: string;
@@ -36,6 +41,7 @@ interface State {
   selectedTheme: string;
   selectedChannel: string;
   selectedVideo: Video;
+  homepageVideos: VideoDetails[];
   videosToDisplay: Array<VideoDetails | Playlist>;
   channelInfos: Channel;
   commentsCollection: IComments;
@@ -59,6 +65,7 @@ const app: Model<State> = (update, get) => ({
     selectedTheme: "0",
     selectedChannel: "",
     selectedVideo: {} as Video,
+    homepageVideos: [],
     videosToDisplay: [],
     channelInfos: {} as Channel,
     commentsCollection: {} as IComments,
@@ -370,6 +377,37 @@ const app: Model<State> = (update, get) => ({
           ...state,
           playlistSelected: result.data
         }))
+      }
+    },
+    fetchVideosForHomepage : async function() {
+      const channels: ChannelsInThemes = apiThemes.getState().state.channels;
+
+      const fetchsCollection: Promise<ResponseToModel<VideoDetails[]>>[] = channels['0'].reduce((acc, channel: ChannelSaved) => {
+        const { authorId } = channel;
+        const promise: Promise<ResponseToModel<VideoDetails[]>> = getInfosFromChannel<VideoDetails[]>(`${authorId}/latest`);
+        acc.push(promise);
+        return acc;
+      }, []); 
+
+      try {
+        const data = await Promise.allSettled(fetchsCollection);
+        const videosTab: VideoDetails[] = data.reduce((acc, res) => {
+          if(res.status === 'fulfilled' && !res.value.error) {
+            // Only first ten videos of channel
+            acc = [
+              ...acc,
+              ...res.value.data.slice(0, 10)
+            ];
+          }
+          return acc;
+        }, []);
+        const shuffledVideosTab: VideoDetails[] = shuffleArray<VideoDetails>(videosTab);
+        update(state => ({
+          ...state,
+          homepageVideos: shuffledVideosTab
+        }));
+      } catch (error) {
+        toast.error(error);
       }
     }
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -20,7 +20,6 @@ interface Props {
   publishedText?: string;
   length: number;
   description?: string;
-  index?: number;
   onChannel: boolean;
   light?: boolean;
   selected?: boolean
@@ -41,7 +40,7 @@ const VideoBox: React.SFC<Props> = props => {
       addVideoOnWatchLater({
         videoId,
         title,
-        videoThumbnails: [{url:thumbnail},{url:thumbnail},{url:thumbnail},{url:thumbnail},{url:thumbnail}],
+        videoThumbnails: Array(5).fill({url:thumbnail}),
         author,
         authorId,
         lengthSeconds: length,
@@ -72,7 +71,6 @@ const VideoBox: React.SFC<Props> = props => {
     publishedText,
     length,
     description,
-    index,
     onChannel,
     light = false,
     selected = false
@@ -81,9 +79,10 @@ const VideoBox: React.SFC<Props> = props => {
   useEffect(() => {
     function checkOnWatchLater(list: SeeLaterVideo[]) {
       const index = list.find(video => video.videoId === videoId);
-      console.log(index);
       if(index) {
         setOnWatchList(true);
+      }else {
+        setOnWatchList(false)
       }
     }
 
@@ -102,12 +101,8 @@ const VideoBox: React.SFC<Props> = props => {
     }
   }, [videoId]);
 
-  console.log(onWatchList);
-
-  const delay = (index % 20) / 8;
-
   return (
-    <Container delay={delay} light={light} selected={selected}>
+    <Container light={light} selected={selected}>
       <Column width={210} align={light ? "center" : "space-between"}>
         {!light && (
           <Row height={onChannel ? 10 : 'auto'}>
@@ -184,21 +179,7 @@ const VideoBox: React.SFC<Props> = props => {
   );
 }
 
-const apparition = keyframes`
-  0% {
-    opacity: 0;
-    left: 400px;
-  }
-  100% {
-    opacity: 1;
-    left: 0px;
-  }
-`;
-
-const Container = styled.div<{delay: number, light?: boolean, selected?: boolean}>`
-  position: relative;
-  opacity: 0;
-  left: 400px;
+const Container = styled.div<{ light?: boolean, selected?: boolean}>`
   box-sizing: border-box; 
   width: 100%;
   height: ${({light}) => light ? '140px' : '180px'};
@@ -206,11 +187,6 @@ const Container = styled.div<{delay: number, light?: boolean, selected?: boolean
   display: flex;
   justify-content: space-between;
   align-items: center;
-  animation-name: ${apparition};
-  animation-duration: 0.2s;
-  animation-timing-function: ease-out;
-  animation-delay: ${({delay}) => `${delay}s`};
-  animation-fill-mode: forwards;
   border-bottom: ${({selected}) => selected ? 'solid 3px #E0E0E0' : 'solid 1px #F5F5F5'};
   border-top: ${({selected}) => selected ? 'solid 3px #E0E0E0' : 'none'};
 `;

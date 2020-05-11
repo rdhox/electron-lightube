@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { VideoPlaylist, RecommendedVideo, Thumbnail } from '../../store/apiType';
+import { VideoPlaylist, RecommendedVideo } from '../../store/apiType';
 import { useApp } from '../../store';
 import { SeeLaterVideo } from '../../store/modelThemes';
 //import components
@@ -49,7 +49,6 @@ const ListVideos: React.SFC<Props> = props => {
             thumbnail={videoThumbnails[4].url}
             length={lengthSeconds}
             viewCount={viewCountText}
-            index={i}
             onChannel={false}
             light
             selected={selectedVideo.videoId === videoId}

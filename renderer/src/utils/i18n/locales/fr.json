@@ -26,6 +26,10 @@
         "watchlater": "regarder plus tard",
         "removeWatchLater": "ne plus regarder plus tard"
       },
+      "VideoBoxHomePage": {
+        "watchlater": "regarder plus tard",
+        "removeWatchLater": "ne plus regarder plus tard"
+      },
       "Filters": {
         "sort_by": "trier par",
         "date": "date d'ajout",

@@ -150,7 +150,6 @@ const VideosDisplay: React.SFC<Props> = props => {
                 publishedText={publishedText}
                 length={lengthSeconds}
                 description={description}
-                index={i}
                 onChannel={showChannelRef.current}
               />
             );
@@ -175,7 +174,6 @@ const VideosDisplay: React.SFC<Props> = props => {
                 playlistId={playlistId}
                 playlistThumbnail={playlistThumbnail}
                 videoCount={videoCount}
-                index={i}
                 onChannel={showChannelRef.current}
                 videos={videos}
               />

@@ -26,6 +26,10 @@
         "watchlater": "watch later",
         "removeWatchLater": "do not watch later anymore"
       },
+      "VideoBoxHomePage": {
+        "watchlater": "watch later",
+        "removeWatchLater": "do not watch later anymore"
+      },
       "Filters": {
         "sort_by": "sort by",
         "date": "date",

@@ -38,7 +38,7 @@ const VideoPage: React.SFC<Props> = props => {
       setIsWatchLaterModalDisplayed(false)
       fetchVideo(video);
     }
-  }, [resetSearch, fetchVideo, setSelectedVideo, setCommentsCollection, idVideo, video]);
+  }, [resetSearch, fetchVideo, setSelectedVideo, setCommentsCollection, idVideo, video, setIsWatchLaterModalDisplayed]);
 
   // If click on video not on playlist list, we erase the playlist
   useEffect(() => {

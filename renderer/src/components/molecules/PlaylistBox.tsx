@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
 import { apiApp, ReducerEffect } from '../../store';
@@ -15,7 +15,6 @@ interface Props {
   playlistId: string;
   playlistThumbnail: string;
   videoCount: number;
-  index?: number;
   onChannel: boolean;
   light?: boolean;
   videos: VideoPlaylist;
@@ -44,16 +43,13 @@ const PlaylistBox: React.SFC<Props> = props => {
     author,
     authorId,
     videoCount,
-    index,
     light = false,
     onChannel,
     videos
   } = props;
 
-  const delay = (index % 20) / 8;
-
   return (
-    <Container delay={delay} light={light}>
+    <Container light={light}>
       <Column width={210} align={light ? "center" : "space-between"}>
         {!light && (
           <Row height={onChannel ? 10 : 'auto'}>
@@ -119,21 +115,7 @@ const PlaylistBox: React.SFC<Props> = props => {
   );
 }
 
-const apparition = keyframes`
-  0% {
-    opacity: 0;
-    left: 400px;
-  }
-  100% {
-    opacity: 1;
-    left: 0px;
-  }
-`;
-
-const Container = styled.div<{delay: number, light?: boolean}>`
-  position: relative;
-  opacity: 0;
-  left: 400px;
+const Container = styled.div<{light?: boolean}>`
   box-sizing: border-box; 
   width: 100%;
   height: ${({light}) => light ? '140px' : '180px'};
@@ -141,11 +123,6 @@ const Container = styled.div<{delay: number, light?: boolean}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  animation-name: ${apparition};
-  animation-duration: 0.2s;
-  animation-timing-function: ease-out;
-  animation-delay: ${({delay}) => `${delay}s`};
-  animation-fill-mode: forwards;
   border-bottom: solid 1px #F5F5F5;
 `;
 

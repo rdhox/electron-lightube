@@ -7,6 +7,7 @@ import { apiThemes, StateRef } from '../../store';
 import { SeeLaterVideo } from '../../store/modelThemes';
 // import components
 import ListVideos from '../molecules/ListVideos';
+import SmallTitle from '../atoms/SmallTitle';
 
 interface Props {
   transitionState: string;
@@ -45,6 +46,9 @@ const WatchLater: React.SFC<Props> = props => {
         ...transitionStyles[transitionState],
       }}
     >
+      <Row>
+        <SmallTitle bold>Watch Later</SmallTitle>
+      </Row>
       {watchLaterRef.current.length > 0 ? (
         <ListVideos videos={videoList} />
       ):(
@@ -66,6 +70,12 @@ const Container = styled.div`
   z-index: 980;
   background-color: white;
   overflow-y: scroll;
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
 `;
 
 const Text = styled.div`
