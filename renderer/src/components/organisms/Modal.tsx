@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
-import { apiApp } from '../../store';
+import { apiApp, StateRef } from '../../store';
 
 interface Props {
   children: React.ReactNode;
@@ -23,7 +23,9 @@ const Modal: React.SFC<Props> = props => {
   useEffect(() => {
 
     const unsubFilter = apiApp.subscribe(
-      (isFiltersOn: boolean) => setFilters(isFiltersOn),
+      (isFiltersOn: boolean) => {
+        setFilters(isFiltersOn);
+      },
       appState => appState.state.isFiltersOn
     );
 
@@ -47,7 +49,7 @@ const Container = styled.div<{header?: boolean, filtersOn?: boolean}>`
         return '370px';
       return '170px';
     }
-    return 'Opx';
+    return 0;
   }};
   bottom: 0;
   background-color: rgba(44,62,80 ,0.2);

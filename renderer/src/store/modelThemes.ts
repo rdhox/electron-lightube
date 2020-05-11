@@ -89,6 +89,10 @@ const themes: Model<ThemesState> = (update, get) => ({
 
       const themes: Themes = JSON.parse(JSON.stringify(get().state.themes));
       const channels: ChannelsInThemes = JSON.parse(JSON.stringify(get().state.channels));
+
+      // we remove the channels from the ALL theme
+      channels["0"] = channels["0"].filter(cAll => !channels[id].find(c => c.authorId === cAll.authorId ));
+      // we delete the theme
       delete channels[id];
       delete themes[id];
 

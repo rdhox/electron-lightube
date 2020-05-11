@@ -37,7 +37,7 @@ const ModalLayout: React.SFC<Props> = props => {
       />
       
       {isDeleteThemeDisplayed && (
-        <Modal>
+        <Modal header={false} >
           <AlertWindow />
         </Modal>
       )}
