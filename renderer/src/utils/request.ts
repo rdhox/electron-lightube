@@ -12,6 +12,7 @@ export async function request<T>(
   method: string = 'GET',
   body: any = false,
   baseUrl: string,
+  errorMessage?: string
 ): Promise<ResponseToModel<T>> {
   const headers = {
     Accept: 'application/json',
@@ -48,7 +49,11 @@ export async function request<T>(
       });
     })
   .catch((error: string) => {
-    toast.error(error);
+    if(errorMessage) {
+      toast.error(errorMessage, {autoClose: 2000})
+    } else {
+      toast.error(error, {autoClose: 2000});
+    }
     return ({
       error: true,
       message: error,

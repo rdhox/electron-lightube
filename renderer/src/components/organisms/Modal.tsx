@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
-import { apiApp, StateRef } from '../../store';
+import { apiApp } from '../../store';
 
 interface Props {
   children: React.ReactNode;

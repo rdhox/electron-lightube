@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import logoImg from '../../assets/logo.png';
 
-import { apiApp, ReducerEffect, StateRef } from '../../store';
+import { apiApp, ReducerEffect, useApp } from '../../store';
 // import components
 import InputSearch from '../molecules/InputSearch';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -15,12 +15,12 @@ export interface Props {}
  
 const Header: React.SFC <Props> = () => {
 
-  function handleSeeLateModal():void {
-    setIsWatchLaterModalDisplayed(!isSeeLaterModalDisplayedRef.current);
+  function handleSeeLaterModal():void {
+    setIsWatchLaterModalDisplayed(!isWatchLaterModalDisplayed);
   }
   
   function clickSettings() {
-    setIsSettingsModalDisplayed(!isSettingsModalDisplayedRef.current);
+    setIsSettingsModalDisplayed(!isSettingsModalDisplayed);
   }
 
   function goHome() {
@@ -31,23 +31,8 @@ const Header: React.SFC <Props> = () => {
 
   const setIsSettingsModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSettingsModalDisplayed;
   const setIsWatchLaterModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
-  const isSettingsModalDisplayedRef: StateRef<boolean> = useRef(apiApp.getState().state.isSettingsModalDisplayed);
-  const isSeeLaterModalDisplayedRef: StateRef<boolean> = useRef(apiApp.getState().state.isWatchLaterModalDisplayed);
-
-  useEffect(() => {
-    const unsubSettingsTrigger =  apiApp.subscribe(
-      (isSettingsModalDisplayed: boolean) => isSettingsModalDisplayedRef.current = isSettingsModalDisplayed,
-      appState => appState.state.isSettingsModalDisplayed
-    );
-    const unsubSeeLater = apiApp.subscribe(
-      (isWatchLaterModalDisplayed: boolean) => isSeeLaterModalDisplayedRef.current = isWatchLaterModalDisplayed,
-      appState => appState.state.isWatchLaterModalDisplayed
-    );
-    return () => {
-      unsubSettingsTrigger();
-      unsubSeeLater();
-    }
-  }, []);
+  const isSettingsModalDisplayed: boolean = useApp(appState => appState.state.isSettingsModalDisplayed);
+  const isWatchLaterModalDisplayed: boolean = useApp(appState => appState.state.isWatchLaterModalDisplayed);
 
   return (
     <Container>
@@ -55,9 +40,10 @@ const Header: React.SFC <Props> = () => {
         <Row align="flex-start">
           <Logo src={logoImg} onClick={goHome} />
           <ButtonIcon
+            round
             icon="gear"
             handleClick={clickSettings}
-            backgroundColor="transparent"
+            backgroundColor={ isSettingsModalDisplayed ? "#BBDEFB" : "transparent"}
             width={50}
             height={50}
             widthIcon={40}
@@ -66,8 +52,8 @@ const Header: React.SFC <Props> = () => {
           <ButtonIcon
             round
             icon="time"
-            handleClick={handleSeeLateModal}
-            backgroundColor="transparent"
+            handleClick={handleSeeLaterModal}
+            backgroundColor={ isWatchLaterModalDisplayed ? "#BBDEFB" : "transparent"}
             width={50}
             height={50}
             widthIcon={40}
@@ -101,7 +87,7 @@ const Row = styled.div<{align: string}>`
 
 const Logo = styled.img`
   width: auto;
-  height: 60px;
+  height: 50px;
   margin:  0 15px 0 10px;
   cursor: pointer;
 `

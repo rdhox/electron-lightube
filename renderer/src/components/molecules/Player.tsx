@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { apiApp } from '../../store';
+import { apiApp, apiSettings, StateRef } from '../../store';
 import { Video, Playlist, VideoPlaylist, RecommendedVideo } from '../../store/apiType';
 // import components
 import ReactPlayer from 'react-player';
@@ -32,6 +32,8 @@ const Player: React.SFC<Props> = props => {
   const selectedVideo: Video = apiApp.getState().state.selectedVideo;
   const playlistSelected: Playlist = apiApp.getState().state.playlistSelected;
 
+  const autoplayRef: StateRef<boolean> = useRef(apiSettings.getState().state.autoplay);
+
    // Autoplay 
   useEffect(() => {
     function findNextVideo(selected, playList) {
@@ -54,18 +56,24 @@ const Player: React.SFC<Props> = props => {
 
     const unsubNextSelectedVideo = apiApp.subscribe(
       (selectedVideo: Video) => {
-        findNextVideo(selectedVideo, playlistSelected);
+        if(autoplayRef.current) {
+          findNextVideo(selectedVideo, playlistSelected);
+        }
       },
       appState => appState.state.selectedVideo
     );
     const unsubNextPlaylistVideo = apiApp.subscribe(
       (playlistSelected: Playlist) => {
-        findNextVideo(selectedVideo, playlistSelected);
+        if(autoplayRef.current) {
+          findNextVideo(selectedVideo, playlistSelected);
+        }
       },
       appState => appState.state.playlistSelected
     );
-
-    findNextVideo(selectedVideo, playlistSelected);
+    
+    if(autoplayRef.current) {
+      findNextVideo(selectedVideo, playlistSelected);
+    }
 
     return () => {
       unsubNextSelectedVideo();
@@ -73,6 +81,16 @@ const Player: React.SFC<Props> = props => {
     }
 
   }, [idVideo, playlistSelected, selectedVideo]);
+
+  useEffect(() => {
+    const unsubAutoplay = apiSettings.subscribe(
+      (autoplay: boolean) => autoplayRef.current = autoplay,
+      settingsState => settingsState.state.autoplay
+    );
+    return () => {
+      unsubAutoplay();
+    }
+  }, []);
 
   return (
     <Container>

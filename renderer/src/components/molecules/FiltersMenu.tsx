@@ -130,7 +130,7 @@ const animation = keyframes`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 530px;
+  width: 390px;
   height: 0px;
   opacity: 0;
   animation-name: ${animation};

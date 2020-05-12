@@ -1,7 +1,5 @@
 import { toast } from 'react-toastify';
-
-import { Model } from './index';
-import { apiThemes } from './index';
+import { Model, apiSettings, apiThemes } from './index';
 import { ChannelsInThemes, ChannelSaved } from './modelThemes';
 import {
   getResultGlobalSearch,
@@ -219,6 +217,7 @@ const app: Model<State> = (update, get) => ({
         duration,
         type
       } = get().state.filters;
+      const region = apiSettings.getState().state.codeRegion;
 
 
       if(showChannel) {
@@ -233,7 +232,7 @@ const app: Model<State> = (update, get) => ({
         }
       }
 
-      const params: string = `?q=${query}&page=${page}${sort_by !== '' ? `&sort_by=${sort_by}`: ''}${date !== '' ? `&date=${date}`: ''}${duration !== '' ? `&duration=${duration}` : ''}${type !== '' ? `&type=${type}`: ''}`;
+      const params: string = `?q=${query}&page=${page}${sort_by !== '' ? `&sort_by=${sort_by}`: ''}${date !== '' ? `&date=${date}`: ''}${duration !== '' ? `&duration=${duration}` : ''}${type !== '' ? `&type=${type}`: ''}&region=${region}`;
 
       const result: ResponseToModel<VideoDetails[]> = await getResultGlobalSearch<VideoDetails[]>(params);
       if (!result.error) {
@@ -251,7 +250,7 @@ const app: Model<State> = (update, get) => ({
       const setShowChannel = get().reducers.setShowChannel;
       setShowChannel(true);
 
-      const result: ResponseToModel<ChannelFromApi> = await getInfosFromChannel<ChannelFromApi>(channel);
+      const result: ResponseToModel<ChannelFromApi> = await getInfosFromChannel<ChannelFromApi>(channel, channel);
       if (!result.error) {
         const {
           author,
@@ -292,7 +291,14 @@ const app: Model<State> = (update, get) => ({
           channelInfos: {},
         }));
       }
-      const result: ResponseToModel<VideoDetails[]> = await getVideosFromChannel<VideoDetails[]>(`${authorId}?page=${page}`);
+
+      let errorInfo = author;
+      if (page > 1) {
+        const channelInfos = get().state.channelInfos;
+        errorInfo = channelInfos.author;
+      }
+
+      const result: ResponseToModel<VideoDetails[]> = await getVideosFromChannel<VideoDetails[]>(`${authorId}?page=${page}`, errorInfo);
       if (!result.error) {
         if(page === 1) {
           update(state => ({
@@ -383,8 +389,8 @@ const app: Model<State> = (update, get) => ({
       const channels: ChannelsInThemes = apiThemes.getState().state.channels;
 
       const fetchsCollection: Promise<ResponseToModel<VideoDetails[]>>[] = channels['0'].reduce((acc, channel: ChannelSaved) => {
-        const { authorId } = channel;
-        const promise: Promise<ResponseToModel<VideoDetails[]>> = getInfosFromChannel<VideoDetails[]>(`${authorId}/latest`);
+        const { authorId, author } = channel;
+        const promise: Promise<ResponseToModel<VideoDetails[]>> = getInfosFromChannel<VideoDetails[]>(`${authorId}/latest`, author);
         acc.push(promise);
         return acc;
       }, []); 
@@ -393,10 +399,10 @@ const app: Model<State> = (update, get) => ({
         const data = await Promise.allSettled(fetchsCollection);
         const videosTab: VideoDetails[] = data.reduce((acc, res) => {
           if(res.status === 'fulfilled' && !res.value.error) {
-            // Only first ten videos of channel
+            // Only first 5 videos of channel
             acc = [
               ...acc,
-              ...res.value.data.slice(0, 10)
+              ...res.value.data.slice(0, 5)
             ];
           }
           return acc;
@@ -407,7 +413,7 @@ const app: Model<State> = (update, get) => ({
           homepageVideos: shuffledVideosTab
         }));
       } catch (error) {
-        toast.error(error);
+        toast.error(error, {autoClose: 2000});
       }
     }
   }

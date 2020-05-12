@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { useApp, apiApp, apiThemes, ReducerEffect } from '../../store';
+import { useApp, apiApp, apiThemes, ReducerEffect, apiSettings } from '../../store';
 import { ChannelsInThemes } from '../../store/modelThemes';
 import { VideoDetails } from '../../store/apiType';
+import { apiInstance } from '../../services/apiService';
 // import components
 import VideoBoxHomePage from '../molecules/VideoBoxHomePage';
 import Spinner from '../atoms/Spinner';
@@ -16,17 +17,37 @@ const HomePage: React.SFC<Props> = () => {
   const loading: boolean = useApp(appState => appState.state.loading);
   const fetchVideosForHomepage: ReducerEffect = apiApp.getState().effects.fetchVideosForHomepage;
 
+  const [ firstTimeLoading, setFirstTimeLoading ] = useState<boolean>(true);
+
   useEffect(() => {
+
+    function fetchVideos() {
+      if(firstTimeLoading) {
+        setTimeout(() => {
+          setFirstTimeLoading(false);
+          fetchVideos();
+        }, 250);
+      } else {
+        if(apiInstance.getUrl() === '') {
+          const urlApi = apiSettings.getState().state.apiUrl;
+          apiInstance.setUrl(urlApi);
+        }
+        fetchVideosForHomepage();
+      }
+    }
+
     const unsubChannels = apiThemes.subscribe(
       (channels: ChannelsInThemes) => {
-        fetchVideosForHomepage();
+        fetchVideos();
       },
       appThemes => appThemes.state.channels
     );
+
+    fetchVideos();
     return () => {
       unsubChannels();
     }
-  }, [fetchVideosForHomepage]);
+  }, [fetchVideosForHomepage, firstTimeLoading]);
 
   return (
     <Container>

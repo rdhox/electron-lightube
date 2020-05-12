@@ -15,6 +15,11 @@ const store = new Store({
     state : {
       settingsState: {
         locale: 'en',
+        apiUrl: 'https://invidio.us',
+        autoplay: true,
+        showRecommended: true,
+        showComments: true,
+        codeRegion: 'US'
       },
       themesState: {
         themes: {
@@ -68,6 +73,9 @@ async function createWindow() {
       mainWindow.webContents.send('APP_INITIAL_STATE', { 
         initialSettings: initialState.settingsState,
         initialThemes: initialState.themesState
+      });
+      mainWindow.webContents.send('APP_URL_API', {
+        urlApi: initialState.settingsState.apiUrl
       });
     }
   });

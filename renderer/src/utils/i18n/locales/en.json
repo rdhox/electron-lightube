@@ -55,6 +55,23 @@
     "organisms":{
       "WatchLater": {
         "novideo": "No video saved."
+      },
+      "Settings": {
+        "locale": "languages",
+        "instance": "Invidious Instances",
+        "confirmInstance": "Confirm new instance",
+        "autoplay": "autoplay next video",
+        "showComments": "load comments under video",
+        "showRecommended": "load recommended videos",
+        "codeRegion": "Region for pertinent results"
+      }
+    },
+    "global": {
+      "errors": {
+        "search": "Server error while fetching result.",
+        "comments": "Comments were not able to load correctly.",
+        "informations": "Informations and recommended videos were not able to load correctly",
+        "channel": "Server error while fetching videos from"
       }
     }
   }

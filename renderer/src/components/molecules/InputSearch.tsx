@@ -67,7 +67,7 @@ const InputSearch: React.SFC<Props> = props => {
           value={searchValue}
           onHandleChange={setSearchValue}
           placeholder={t('molecules.InputSearch.search')}
-          length='400px'
+          length='250px'
         />
         {!channelOn && (
           <>
@@ -128,7 +128,7 @@ const WrapperChannel = styled.span<{channel: boolean}>`
   display: flex;
   align-items: center;
   height: ${({channel}) => channel ? '50px' :  '0'};
-  width: ${({channel}) => channel ? '150px' :  '0'};
+  width: ${({channel}) => channel ? '130px' :  '0'};
   padding-left: ${({channel}) => channel ? '20px' :  '0'};
   background-color: ${({channel}) => channel ? '#FAFAFA' :  'transparent'};
   border-right: ${({channel}) => channel ? 'solid 1px lightgray' :  'none'};

@@ -55,6 +55,23 @@
     "organisms":{
       "WatchLater": {
         "novideo": "Aucune video à regarder."
+      },
+      "Settings": {
+        "locale": "langue",
+        "instance": "Invidious Instances",
+        "confirmInstance": "Confirmer nouvelle instance",
+        "autoplay": "Lecture automatique vidéo suivante",
+        "showComments": "Charger commentaires sous la video",
+        "showRecommended": "Charger vidéos recommandées",
+        "codeRegion": "Region pour des résultats pertinents"
+      }
+    },
+    "global": {
+      "errors": {
+        "search": "Erreur du serveur lors de la récupération des résultats.",
+        "comments": "Les commentaires n'ont pas pu se charger correctement.",
+        "informations": "Les vidéos recommandées et informations de la vidéo n'on pas pu se charger correctement.",
+        "channel": "Erreur du serveur lors de la recherche de nouvelles vidéos pour la chaine"
       }
     }
   }
