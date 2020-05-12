@@ -4,7 +4,10 @@
   "description": "",
   "main": "./src/electron.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev nodemon --exec \"electron src/electron.js\""
+    "start": "cross-env NODE_ENV=dev nodemon --exec \"electron src/electron.js\"",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +15,7 @@
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "cross-env": "^7.0.2",
+    "electron-builder": "^22.6.0",
     "electron-is-dev": "^1.2.0",
     "electron-reload": "^1.5.0",
     "nodemon": "^2.0.3",
