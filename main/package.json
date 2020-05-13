@@ -1,12 +1,25 @@
 {
-  "name": "main",
+  "name": "lightube",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/electron.js",
+  "main": "src/electron.js",
+  "homepage": "./",
+  "build": {
+    "appId": "electron.lightube.app",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "electron-lightube",
+      "owner": "rdhox"
+    }
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=dev nodemon --exec \"electron src/electron.js\"",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "build": "cp -r ../renderer/build ./build && cp -r src build/src",
+    "package": "electron-builder build --mac --win --linux -c.extraMetadata.main=build/src/electron.js --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
@@ -14,17 +27,17 @@
   "license": "ISC",
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "electron": "^8.2.3",
     "cross-env": "^7.0.2",
     "electron-builder": "^22.6.0",
-    "electron-is-dev": "^1.2.0",
-    "electron-reload": "^1.5.0",
     "nodemon": "^2.0.3",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "@cliqz/adblocker-electron": "^1.14.4",
-    "electron": "^8.2.3",
     "electron-store": "^5.1.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "electron-is-dev": "^1.2.0",
+    "electron-reload": "^1.5.0"
   }
 }

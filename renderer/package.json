@@ -2,21 +2,12 @@
   "name": "electron-lightube",
   "version": "0.1.0",
   "private": true,
-  "main": "src/electron.js",
   "homepage": "./",
-  "build": {
-    "appId": "com.lightube.app",
-    "directories": {
-      "buildResources": "assets"
-    }
-  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/styled-components": "^5.1.0",
-    "electron": "^8.2.3",
-    "electron-is-dev": "^1.2.0",
     "i18next": "^19.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -35,8 +26,7 @@
     "start": "cross-env BROWSER=none npm run react-start",
     "react-start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"

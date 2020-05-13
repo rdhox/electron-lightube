@@ -1,17 +1,9 @@
 import tubeApi, { API } from '../utils/api';
 import { ResponseToModel } from '../utils/request';
 
-const { myIpcRenderer } = window;
-
 export type ServiceApi = <T>(data: any, errorInfo?: string) => Promise<ResponseToModel<T>>;
 
 export const apiInstance: API = new tubeApi('');
-
-myIpcRenderer.on('APP_URL_API', data => {
-  const { urlApi } = data;
-  apiInstance.setUrl(urlApi);
-});
-
 
 export const getResultGlobalSearch: ServiceApi = <T>(data) => apiInstance.getResultGlobalSearch<T>(data);
 export const getInfosFromChannel: ServiceApi = <T>(data, errorInfo) => apiInstance.getInfosFromChannel<T>(data, errorInfo);
