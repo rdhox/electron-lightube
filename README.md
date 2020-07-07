@@ -25,6 +25,6 @@ The renderer part can be used as a classic web react project. Just remove the `u
 
 ## Download the application
 
-To come.
+https://sourceforge.net/projects/electron-lightube/files/
 
 
