@@ -9,6 +9,12 @@ Clone the project. There is a folder `main` for the electron part, and a `render
 Go to each of the folder and run `yarn` to install the dependencies.
 To run the project, go first to the `renderer` folder, and run `yarn start`, and do the same with the `main` folder. The electron application will start. 
 
+## How to build
+
+ 1. Go to the `renderer` folder and run `yarn build`.
+ 2. Go to the `main` folder and run `yarn build`.
+ 3. Still on the `main` folder, run `yarn package` to build the application for mac, ubuntu and windows. 
+
 
 ## Use as a web front-end
 The renderer part can be used as a classic web react project. Just remove the `useEffect` on `MainLayout.tsx` to remove the link with electron.
