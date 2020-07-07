@@ -1,5 +1,9 @@
 # Electron-Lightube
 
+[example]: https://github.com/rdhox/electron-lightube/blob/master/demo.gif "demo electron-lightube"
+
+![alt text][example]
+
 **This project is in his early stage of developpement.** 
 The goal of this project is to propose a light electron youtube client, wrote with Typescript and React, the project use Zustand to handle globals states, with the system of models, inspired by dvaJS. The front-end part is as much as possible separated from the electron part, to easily use the front for a web-site. I developped it for fun during the quarantine to discover how electron worked. I will try to continue to project and add some features when I'll find the time. Feel free to fork or make pull requests, I will answer as soon as possible. 
 
