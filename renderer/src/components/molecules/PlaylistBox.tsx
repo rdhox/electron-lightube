@@ -31,8 +31,8 @@ const PlaylistBox: React.SFC<Props> = props => {
     history.push(`/video/${videos[0].videoId}`);
   }
 
-  const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
-  const fetchPlaylist: ReducerEffect = apiApp.getState().effects.fetchPlaylist;
+  const fetchChannelInfos: ReducerEffect<[string?, number?, string?, string?, number?, string?]> = apiApp.getState().effects.fetchChannelInfos;
+  const fetchPlaylist: ReducerEffect<[string]> = apiApp.getState().effects.fetchPlaylist;
 
   const history = useHistory();
 

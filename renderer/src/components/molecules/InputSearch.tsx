@@ -39,10 +39,10 @@ const InputSearch: React.SFC<Props> = props => {
   const channelInfos: Channel = useApp(appState => appState.state.channelInfos);
   const isFiltersOn: boolean = useApp(appState => appState.state.isFiltersOn);
 
-  const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
-  const launchSearchOnChannel: ReducerEffect = apiApp.getState().effects.launchSearchOnChannel;
-  const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
-  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
+  const launchSearch: ReducerEffect<[string, number?]> = apiApp.getState().effects.launchSearch;
+  const launchSearchOnChannel: ReducerEffect<[string?, number?]> = apiApp.getState().effects.launchSearchOnChannel;
+  const setIsSearchModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsSearchModalDisplayed;
+  const setIsFiltersOn: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsFiltersOn;
 
   const [searchValue, setSearchValue] = useState<string>("");
 

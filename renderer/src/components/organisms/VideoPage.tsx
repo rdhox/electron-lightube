@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import { useApp, apiApp, useSettings, apiSettings, ReducerEffect } from '../../store';
-import { Video, Playlist } from '../../store/apiType';
+import { Video, Playlist, IComments } from '../../store/apiType';
 // import components
 import ListVideos from '../molecules/ListVideos';
 import ButtonIcon from '../atoms/ButtonIcon';
@@ -23,12 +23,12 @@ const VideoPage: React.SFC<Props> = props => {
   const [ video, setVideo ] = useState<string>(idVideo);
 
   const showRecommended: boolean = apiSettings.getState().state.showRecommended;
-  const resetSearch: ReducerEffect = apiApp.getState().reducers.resetSearch;
-  const fetchVideo: ReducerEffect = apiApp.getState().effects.fetchVideo;
-  const setSelectedVideo: ReducerEffect = apiApp.getState().reducers.setSelectedVideo;
-  const setCommentsCollection: ReducerEffect = apiApp.getState().reducers.setCommentsCollection;
-  const setPlaylistSelected: ReducerEffect = apiApp.getState().reducers.setPlaylistSelected;
-  const setIsWatchLaterModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
+  const resetSearch: ReducerEffect<[]> = apiApp.getState().reducers.resetSearch;
+  const fetchVideo: ReducerEffect<[string]> = apiApp.getState().effects.fetchVideo;
+  const setSelectedVideo: ReducerEffect<[Video]> = apiApp.getState().reducers.setSelectedVideo;
+  const setCommentsCollection: ReducerEffect<[IComments]> = apiApp.getState().reducers.setCommentsCollection;
+  const setPlaylistSelected: ReducerEffect<[Playlist]> = apiApp.getState().reducers.setPlaylistSelected;
+  const setIsWatchLaterModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
 
   const selectedVideo: Video = useApp(appState => appState.state.selectedVideo);
   const playlistSelected: Playlist = useApp(appState => appState.state.playlistSelected);
@@ -39,8 +39,8 @@ const VideoPage: React.SFC<Props> = props => {
 
   useEffect(() => {
     if(idVideo !== video) {
-      setSelectedVideo({});
-      setCommentsCollection({});
+      setSelectedVideo({} as Video);
+      setCommentsCollection({} as IComments);
       setVideo(idVideo);
     } else if (idVideo === video){
       resetSearch();
@@ -53,7 +53,7 @@ const VideoPage: React.SFC<Props> = props => {
   useEffect(() => {
     if(Object.keys(playlistSelected).length > 0) {
       if(!Object.keys(playlistSelected.videos).some(i => playlistSelected.videos[i].videoId === idVideo)){
-        setPlaylistSelected({});
+        setPlaylistSelected({} as Playlist);
       }
     }
   }, [idVideo, playlistSelected, setPlaylistSelected]);

@@ -53,7 +53,7 @@ const FiltersMenu:React.SFC<Props> = props => {
   }
 
   const filtersRef: StateRef<Filters> = useRef(apiApp.getState().state.filters);
-  const setFilters: ReducerEffect = apiApp.getState().reducers.setFilters;
+  const setFilters: ReducerEffect<[Filters]> = apiApp.getState().reducers.setFilters;
 
   const [ t ] = useTranslation();
   const [ sortBy, setSortBy ] = useState<SortBy>(filtersRef.current.sort_by !== '' ? filtersRef.current.sort_by : 'relevance');

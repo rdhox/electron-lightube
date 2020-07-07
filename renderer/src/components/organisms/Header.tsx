@@ -29,8 +29,8 @@ const Header: React.SFC <Props> = () => {
 
   const history = useHistory();
 
-  const setIsSettingsModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSettingsModalDisplayed;
-  const setIsWatchLaterModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
+  const setIsSettingsModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsSettingsModalDisplayed;
+  const setIsWatchLaterModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsWatchLaterModalDisplayed;
   const isSettingsModalDisplayed: boolean = useApp(appState => appState.state.isSettingsModalDisplayed);
   const isWatchLaterModalDisplayed: boolean = useApp(appState => appState.state.isWatchLaterModalDisplayed);
 

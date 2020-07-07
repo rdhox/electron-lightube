@@ -43,8 +43,8 @@ const VideoBoxHomePage: React.SFC<Props> = props => {
 
   const [ t ]= useTranslation();
 
-  const addVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.addVideoOnWatchLater;
-  const removeVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.removeVideoOnWatchLater;
+  const addVideoOnWatchLater: ReducerEffect<[SeeLaterVideo]> = apiThemes.getState().effects.addVideoOnWatchLater;
+  const removeVideoOnWatchLater: ReducerEffect<[string]> = apiThemes.getState().effects.removeVideoOnWatchLater;
   const watchLaterRef: StateRef<SeeLaterVideo[]> = useRef(apiThemes.getState().state.watchlater);
 
   const [ onWatchList, setOnWatchList ] = useState<boolean>(false);

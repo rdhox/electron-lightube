@@ -14,7 +14,7 @@ const SearchModal: React.SFC<Props> = props => {
   function closeModal():void {
     resetSearch();
   }
-  const resetSearch: ReducerEffect = apiApp.getState().reducers.resetSearch;
+  const resetSearch: ReducerEffect<[]> = apiApp.getState().reducers.resetSearch;
 
   return (
     <Container>

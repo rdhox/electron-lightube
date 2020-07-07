@@ -16,7 +16,7 @@ export interface API {
   getPlaylist: apiRequest;
 }
 
-export class tubeApi {
+export class tubeApi implements API {
   url: string;
   constructor(baseUrl: string) {
     this.url = baseUrl;

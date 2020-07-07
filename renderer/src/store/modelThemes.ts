@@ -1,3 +1,6 @@
+import create from 'zustand';
+import {update} from './middleware';
+
 import uniqid from 'uniqid';
 import { Model } from './index';
 import { apiApp } from './index';
@@ -157,4 +160,4 @@ const themes: Model<ThemesState> = (update, get) => ({
   }
 });
 
-export default themes;
+export const [ useThemes, apiThemes ] = create((set, get) => themes(update(set, get), get));

@@ -59,12 +59,12 @@ const Settings: React.SFC<Props> = props => {
   const showCommentsRef: StateRef<boolean> = useRef(apiSettings.getState().state.showComments);
   const codeRegionRef: StateRef<string> = useRef(apiSettings.getState().state.codeRegion);
 
-  const setLocale: ReducerEffect = apiSettings.getState().reducers.setLocale;
-  const setApiUrl: ReducerEffect = apiSettings.getState().reducers.setApiUrl;
-  const setAutoPlay: ReducerEffect = apiSettings.getState().reducers.setAutoPlay;
-  const setShowRecommended: ReducerEffect = apiSettings.getState().reducers.setShowRecommended;
-  const setShowComments: ReducerEffect = apiSettings.getState().reducers.setShowComments;
-  const setCodeRegion: ReducerEffect = apiSettings.getState().reducers.setCodeRegion;
+  const setLocale: ReducerEffect<[string]> = apiSettings.getState().reducers.setLocale;
+  const setApiUrl: ReducerEffect<[string]> = apiSettings.getState().reducers.setApiUrl;
+  const setAutoPlay: ReducerEffect<[boolean]> = apiSettings.getState().reducers.setAutoPlay;
+  const setShowRecommended: ReducerEffect<[boolean]> = apiSettings.getState().reducers.setShowRecommended;
+  const setShowComments: ReducerEffect<[boolean]> = apiSettings.getState().reducers.setShowComments;
+  const setCodeRegion: ReducerEffect<[string]> = apiSettings.getState().reducers.setCodeRegion;
 
   const [ localeLocal, setLocaleLocal ] = useState<string>(localeRef.current);
   const [ codeRegionLocal, setCodeRegionLocal ] = useState<string>(codeRegionRef.current);

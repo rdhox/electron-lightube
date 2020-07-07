@@ -31,11 +31,11 @@ const ListChannels: React.SFC<Props> = props => {
     );
   }
 
-  const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
-  const fetchChannelVideo: ReducerEffect = apiApp.getState().effects.fetchChannelVideo;
-  const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
-  const setSelectedChannel: ReducerEffect = apiApp.getState().reducers.setSelectedChannel;
-  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
+  const setIsSearchModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsSearchModalDisplayed;
+  const fetchChannelVideo: ReducerEffect<[string?, number?, string?, string?, number?, string?]> = apiApp.getState().effects.fetchChannelVideo;
+  const setShowChannel: ReducerEffect<[boolean]> = apiApp.getState().reducers.setShowChannel;
+  const setSelectedChannel: ReducerEffect<[string]> = apiApp.getState().reducers.setSelectedChannel;
+  const setIsFiltersOn: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsFiltersOn;
 
   const channels: ChannelsInThemes = useThemes(themesState => themesState.state.channels);
   const selectedTheme: string = useApp(appState => appState.state.selectedTheme);

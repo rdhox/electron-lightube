@@ -19,7 +19,7 @@ const InputTheme: React.SFC<Props> = props => {
   const [ newTheme, setNewTheme ] = useState<string>('');
 
   const { t } = useTranslation();
-  const addTheme: ReducerEffect = apiThemes.getState().effects.addTheme;
+  const addTheme: ReducerEffect<[string]> = apiThemes.getState().effects.addTheme;
 
   return (
     <Container>

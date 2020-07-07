@@ -19,8 +19,8 @@ const MainLayout : React.SFC = () => {
 
   useEffect(() => {
 
-    const initializedSettings: ReducerEffect = apiSettings.getState().reducers.initialize;
-    const initializedThemes: ReducerEffect = apiThemes.getState().reducers.initialize;
+    const initializedSettings: ReducerEffect<[SettingsState]> = apiSettings.getState().reducers.initialize;
+    const initializedThemes: ReducerEffect<[ThemesState]> = apiThemes.getState().reducers.initialize;
 
     const unsubInitialData = myIpcRenderer.on('APP_INITIAL_STATE', data => {
       initializedSettings(data.initialSettings);

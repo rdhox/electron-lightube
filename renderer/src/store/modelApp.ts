@@ -1,3 +1,5 @@
+import create from 'zustand';
+import {loadingDetection, update} from './middleware';
 import { toast } from 'react-toastify';
 import { Model, apiSettings, apiThemes } from './index';
 import { ChannelsInThemes, ChannelSaved } from './modelThemes';
@@ -68,7 +70,7 @@ const app: Model<State> = (update, get) => ({
     channelInfos: {} as Channel,
     commentsCollection: {} as IComments,
     isDeleteThemeDisplayed: false,
-    displayModalAlert: {},
+    displayModalAlert: {} as ModalAlert,
     isSearchModalDisplayed: false,
     isSettingsModalDisplayed: false,
     isWatchLaterModalDisplayed: false,
@@ -281,7 +283,7 @@ const app: Model<State> = (update, get) => ({
       page: number = 1,
       image: string = '',
       author: string = '',
-      subCount: string = '',
+      subCount: number = 0,
       description: string = ''
       ){
       
@@ -419,4 +421,7 @@ const app: Model<State> = (update, get) => ({
   }
 });
 
-export default app;
+export const [ useApp, apiApp ] = create((set, get) => loadingDetection(
+  app(update(set, get), get),
+  set)
+);

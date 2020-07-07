@@ -15,7 +15,7 @@ const HomePage: React.SFC<Props> = () => {
 
   const videos: VideoDetails[] = useApp(appState => appState.state.homepageVideos);
   const loading: boolean = useApp(appState => appState.state.loading);
-  const fetchVideosForHomepage: ReducerEffect = apiApp.getState().effects.fetchVideosForHomepage;
+  const fetchVideosForHomepage: ReducerEffect<[]> = apiApp.getState().effects.fetchVideosForHomepage;
 
   const [ firstTimeLoading, setFirstTimeLoading ] = useState<boolean>(true);
 

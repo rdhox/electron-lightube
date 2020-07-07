@@ -1,3 +1,6 @@
+import create from 'zustand';
+import {update} from './middleware';
+
 import { Model } from './index';
 
 export interface SettingsState {
@@ -65,4 +68,4 @@ const settings: Model<SettingsState> = (update, get) => ({
   effects: {}
 });
 
-export default settings;
+export const [ useSettings, apiSettings ] = create((set, get) => settings(update(set, get), get));

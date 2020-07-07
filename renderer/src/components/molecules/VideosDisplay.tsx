@@ -47,9 +47,9 @@ const VideosDisplay: React.SFC<Props> = props => {
   const selectedChannelRef: StateRef<string> = useRef(apiApp.getState().state.selectedChannel);
   const loadingRef: StateRef<boolean> = useRef(apiApp.getState().state.loading);
 
-  const launchSearch: ReducerEffect = apiApp.getState().effects.launchSearch;
-  const launchSearchOnChannel: ReducerEffect = apiApp.getState().effects.launchSearchOnChannel;
-  const fetchChannelVideo: ReducerEffect = apiApp.getState().effects.fetchChannelVideo;
+  const launchSearch: ReducerEffect<[string, number?]> = apiApp.getState().effects.launchSearch;
+  const launchSearchOnChannel: ReducerEffect<[string, number?]> = apiApp.getState().effects.launchSearchOnChannel;
+  const fetchChannelVideo: ReducerEffect<[string?, number?, string?, string?, number?, string?]> = apiApp.getState().effects.fetchChannelVideo;
 
   function updateList(showChannel) {
     if(!showChannel) {

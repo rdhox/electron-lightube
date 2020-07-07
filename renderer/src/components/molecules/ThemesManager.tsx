@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useApp, apiApp, apiThemes, ReducerEffect, StateRef } from '../../store';
 import { Themes } from '../../store/modelThemes';
+import { ModalAlert } from '../../store/modelApp';
 // import components
 import Select from '../atoms/Select';
 import InputTheme from './InputTheme';
@@ -45,11 +46,11 @@ const ThemesManager: React.SFC<Props> = props => {
 
   const themesRef: StateRef<Themes> = useRef(apiThemes.getState().state.themes);
 
-  const deleteTheme: ReducerEffect = apiThemes.getState().effects.deleteTheme;
+  const deleteTheme: ReducerEffect<[string]> = apiThemes.getState().effects.deleteTheme;
   const selectedTheme: string = useApp(appState => appState.state.selectedTheme);
-  const setSelectedTheme: ReducerEffect = apiApp.getState().reducers.setSelectedTheme;
-  const setIsDeleteThemeDisplayed: ReducerEffect = apiApp.getState().reducers.setIsDeleteThemeDisplayed;
-  const setDisplayModalAlert: ReducerEffect = apiApp.getState().reducers.setDisplayModalAlert;
+  const setSelectedTheme: ReducerEffect<[string]> = apiApp.getState().reducers.setSelectedTheme;
+  const setIsDeleteThemeDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsDeleteThemeDisplayed;
+  const setDisplayModalAlert: ReducerEffect<[ModalAlert]> = apiApp.getState().reducers.setDisplayModalAlert;
 
   useEffect(() => {
 

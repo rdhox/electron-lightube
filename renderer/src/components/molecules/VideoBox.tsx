@@ -51,12 +51,12 @@ const VideoBox: React.SFC<Props> = props => {
 
   const [ t ]= useTranslation();
 
-  const setIsSearchModalDisplayed: ReducerEffect = apiApp.getState().reducers.setIsSearchModalDisplayed;
-  const fetchChannelInfos: ReducerEffect = apiApp.getState().effects.fetchChannelInfos;
-  const setIsFiltersOn: ReducerEffect = apiApp.getState().reducers.setIsFiltersOn;
+  const setIsSearchModalDisplayed: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsSearchModalDisplayed;
+  const fetchChannelInfos: ReducerEffect<[string]> = apiApp.getState().effects.fetchChannelInfos;
+  const setIsFiltersOn: ReducerEffect<[boolean]> = apiApp.getState().reducers.setIsFiltersOn;
 
-  const addVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.addVideoOnWatchLater;
-  const removeVideoOnWatchLater: ReducerEffect = apiThemes.getState().effects.removeVideoOnWatchLater;
+  const addVideoOnWatchLater: ReducerEffect<[SeeLaterVideo]> = apiThemes.getState().effects.addVideoOnWatchLater;
+  const removeVideoOnWatchLater: ReducerEffect<[string]> = apiThemes.getState().effects.removeVideoOnWatchLater;
   const watchLaterRef: StateRef<SeeLaterVideo[]> = useRef(apiThemes.getState().state.watchlater);
 
   const [ onWatchList, setOnWatchList ] = useState<boolean>(false);

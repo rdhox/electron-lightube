@@ -18,7 +18,7 @@ interface Subscribed {
 const ChannelBar: React.SFC<Props> = props => {
 
   function back() {
-    setChannelInfos({});
+    setChannelInfos({} as Channel);
     setShowChannel(false);
   }
 
@@ -37,10 +37,10 @@ const ChannelBar: React.SFC<Props> = props => {
     }
   }
 
-  const setShowChannel: ReducerEffect = apiApp.getState().reducers.setShowChannel;
-  const setChannelInfos: ReducerEffect = apiApp.getState().reducers.setChannelInfos;
-  const addChannelToTheme: ReducerEffect = apiThemes.getState().effects.addChannelToTheme;
-  const removeChannelToTheme: ReducerEffect = apiThemes.getState().effects.removeChannelToTheme;
+  const setShowChannel: ReducerEffect<[boolean]> = apiApp.getState().reducers.setShowChannel;
+  const setChannelInfos: ReducerEffect<[Channel]> = apiApp.getState().reducers.setChannelInfos;
+  const addChannelToTheme: ReducerEffect<[ChannelSaved]> = apiThemes.getState().effects.addChannelToTheme;
+  const removeChannelToTheme: ReducerEffect<[string]> = apiThemes.getState().effects.removeChannelToTheme;
 
   const channelsRef: StateRef<ChannelsInThemes> = useRef(apiThemes.getState().state.channels);
   const channelInfosRef: StateRef<Channel> = useRef(apiApp.getState().state.channelInfos);
